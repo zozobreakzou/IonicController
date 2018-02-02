@@ -1,3 +1,97 @@
 page-login-form {
+    .login-form-center-div {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    .login-form {
+        margin: auto;
+        width: 67%;
+    }
+    .login-container-div {
+        display: flex;
+        padding: 4%;
+    }
+    .login-container-remember {
+        align-items:center;
+        justify-content:center;
+    }
+    .login-container-remember ion-label {
+        flex: 0 1 auto;
+        margin-left: 8px;
+    }
+    .login-submit-button {
+        width: 34%;
+        height: 43px;
+        margin: auto;
+        border-radius: 100px;
+        font-family: "PingFangTC-Semibold";
+        font-size: 1.4rem;;
+        color: #FFFFFF;
+        letter-spacing: -0.08px;
+        line-height: 19px;
+        border: none;
+        // &:active{
+        //   background-color: $active-color; 
+        // }
+    }
+    .item.item-block .item-inner {
+        border-bottom: 0 !important;
+    }
+    .item.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+        box-shadow: none;
+    }
+    .item-md.item-input.item-input-has-focus .item-inner, .item-md.item-input.input-has-focus .item-inner {
+        box-shadow: none;
+    }
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        box-shadow: none;
+    }
+    .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        box-shadow: none;
+    }
+    .login-input-label {
+        color: #cacaca;
+        font-size: 2.6rem;
+        margin-left: 8px;
+    }
+    
+    .login-input-icon {
+        color: #ffffff;
+        font-size: 2.6rem;
+    }
+    
+    .login-input-clear-button {
+        height: 3.5rem !important;
+        padding: 8px !important;
+    }
 
+    .login-input-clear-icon {
+        color: #ffffff;
+        font-size: 2.6rem;
+    }
+
+    .login-input-item {
+        width: 85%;
+        height: 5.5rem;
+        margin: auto;
+        border-radius: 100px;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .login-input-item input {
+        font-size: 16px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.1px;
+        color: #ffffff;
+    }
+
+    .text-input::-webkit-input-placeholder {
+        text-indent: 0;
+        color: white;
+    }
 }

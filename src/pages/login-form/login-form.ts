@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 /**
  * Generated class for the LoginFormPage page.
@@ -8,7 +8,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-login-form',
   templateUrl: 'login-form.html',
@@ -21,5 +20,29 @@ export class LoginFormPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginFormPage');
   }
+
+  doLogin() {
+
+  }
+
+  onClearUsername() {
+    this.username = "";
+  }
+
+  onClearPassword() {
+    this.password = "";
+  }
+
+  shouldShowClearUsernameBtn() : boolean {
+    return this.username && this.username.length>0;
+  }
+
+  shouldShowClearPasswordBtn() : boolean {
+    return this.password && this.password.length>0;
+  }
+
+  private username: string  = "";
+  private password: string  = "";
+  private remberMe: boolean = true;
 
 }
