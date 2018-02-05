@@ -1,7 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { Zeroconf, ZeroconfResult } from '@ionic-native/zeroconf';
+import { Network } from '@ionic-native/network';
 
 import { LoginFormPage } from '../pages/login-form/login-form';
 
@@ -13,19 +17,16 @@ export class MyApp {
 
   rootPage: any = LoginFormPage;
 
-  pages: Array<{title: string, component: any}>;
+  loginServerList: Array<string> = [];
 
   constructor(
       public platform: Platform,
       public statusBar: StatusBar,
-      public splashScreen: SplashScreen) {
+      public splashScreen: SplashScreen,
+      public zeroConf: Zeroconf,
+      public network: Network) {
 
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-    ];
-
   }
 
   initializeApp() {
@@ -34,6 +35,20 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
+        if (result.action == 'resolved') {
+          console.log('service resolved', result.service);
+          if(result.service.txtRecord.url) {
+            this.loginServerList.push(result.service.txtRecord.url);
+          }
+        } else if(result.action == 'removed') {
+          console.log('service removed', result.service);
+        } });
+
+      this.network.onDisconnect().subscribe( () => {
+        console.info('network was disconnected :-(');
+      } );
     });
   }
 
