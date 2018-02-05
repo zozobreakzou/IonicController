@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import {SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+
 /**
  * Generated class for the ControllerPage page.
  *
@@ -14,11 +16,17 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ControllerPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+      public navCtrl: NavController,
+      public navParams: NavParams,
+      private sanitizer: DomSanitizer) {
+
+    this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(navParams.data.controller_url);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ControllerPage');
   }
 
+  private controller_url: SafeResourceUrl;
 }
