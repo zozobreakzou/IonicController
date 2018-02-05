@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Zeroconf} from '@ionic-native/zeroconf';
+import { Network } from '@ionic-native/network';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { Zeroconf} from '@ionic-native/zeroconf';
     SplashScreen,
     ScreenOrientation,
     Zeroconf,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
