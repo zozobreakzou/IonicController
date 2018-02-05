@@ -8,6 +8,7 @@ import { ControllerPage } from '../pages/controller/controller';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Zeroconf} from '@ionic-native/zeroconf';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    Zeroconf,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
