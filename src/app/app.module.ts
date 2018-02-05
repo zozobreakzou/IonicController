@@ -18,7 +18,7 @@ import { Zeroconf} from '@ionic-native/zeroconf';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {mode: 'ios'}),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
