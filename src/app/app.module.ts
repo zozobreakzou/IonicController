@@ -8,6 +8,7 @@ import { ControllerPage } from '../pages/controller/controller';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Zeroconf} from '@ionic-native/zeroconf';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { Zeroconf} from '@ionic-native/zeroconf';
   providers: [
     StatusBar,
     SplashScreen,
+    ScreenOrientation,
     Zeroconf,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
