@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { ControllerPage } from '../controller/controller';
+import { LoginManagerPage } from "../login-manager/login-manager";
 
 /**
  * Generated class for the LoginFormPage page.
@@ -27,6 +28,10 @@ export class LoginFormPage {
     this.navCtrl.push(ControllerPage, {
       controller_url: "http://10.3.70.4:8089/html/output/index.html"
     });
+  }
+
+  onLoginManager() {
+    this.navCtrl.push(LoginManagerPage);
   }
 
   onClearUsername() {

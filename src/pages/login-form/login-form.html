@@ -9,10 +9,16 @@
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
+
         <ion-title>Login</ion-title>
+
+        <ion-buttons end>
+          <button ion-button icon-right (click)="onLoginManager()">
+            <ion-icon name="settings"></ion-icon>
+          </button>
+      </ion-buttons>
       </ion-navbar>
 </ion-header>
-
 
 <ion-content fullscreen>
   <div class='login-form-center-div'>
