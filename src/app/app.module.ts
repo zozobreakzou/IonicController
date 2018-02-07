@@ -13,6 +13,8 @@ import { Zeroconf} from '@ionic-native/zeroconf';
 import { Network } from '@ionic-native/network';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { LoginManagerProvider } from '../providers/login-manager/login-manager';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -36,7 +38,8 @@ import { IonicStorageModule } from '@ionic/storage';
     ScreenOrientation,
     Zeroconf,
     Network,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LoginManagerProvider
   ]
 })
 export class AppModule {}
