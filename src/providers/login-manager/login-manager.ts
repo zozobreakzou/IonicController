@@ -33,6 +33,7 @@ export class LoginManagerProvider {
         if (login_manager) {
           this.loginServerList = login_manager.loginServerList;
           this.setCurrentLoginServer(login_manager.currentLoginServer);
+          this.remberAccount = login_manager.remberAccount;
         }
         resolve();
       } ).catch( () => {
@@ -51,7 +52,8 @@ export class LoginManagerProvider {
 
     this.storage.set("login_manager", {
       loginServerList: serverListByFilled,
-      currentLoginServer: this.currentLoginServer ? this.currentLoginServer.address : null
+      currentLoginServer: this.currentLoginServer ? this.currentLoginServer.address : null,
+      remberAccount: this.remberAccount
     });
   }
 
@@ -141,6 +143,11 @@ export class LoginManagerProvider {
     }
   }
 
-  public loginServerList = { };   // keyed by address
-  public currentLoginServer : LoginServerInfo;
+  public setRemberAccount(rember: boolean) {
+    this.remberAccount = rember;
+  }
+
+  public  loginServerList = { };   // keyed by address
+  public  currentLoginServer : LoginServerInfo;
+  private remberAccount : boolean = true;
 }
