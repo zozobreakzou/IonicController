@@ -8,6 +8,7 @@ import { Zeroconf, ZeroconfResult } from '@ionic-native/zeroconf';
 import { Network } from '@ionic-native/network';
 
 import { LoginFormPage } from '../pages/login-form/login-form';
+import { LoginManagerProvider } from '../providers/login-manager/login-manager';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,7 +25,8 @@ export class MyApp {
       public statusBar: StatusBar,
       public splashScreen: SplashScreen,
       public zeroConf: Zeroconf,
-      public network: Network) {
+      public network: Network,
+      public loginManager: LoginManagerProvider) {
 
     this.initializeApp();
   }
@@ -36,15 +38,16 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
-        if (result.action == 'resolved') {
-          console.log('service resolved', result.service);
-          if(result.service.txtRecord.url) {
-            this.loginServerList.push(result.service.txtRecord.url);
-          }
-        } else if(result.action == 'removed') {
-          console.log('service removed', result.service);
-        } });
+      this.loginManager.loadFromStorage().then(() => {
+        this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
+          if (result.action == 'resolved') {
+            console.log('service resolved', result.service);
+            this.loginManager.addLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0], result.service.port, result.service.name);
+          } else if(result.action == 'removed') {
+            console.log('service removed', result.service);
+            this.loginManager.removeLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0]);
+          } });
+      });
 
       this.network.onDisconnect().subscribe( () => {
         console.info('network was disconnected :-(');
