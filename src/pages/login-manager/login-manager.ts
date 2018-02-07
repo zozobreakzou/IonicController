@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { LoginManagerProvider } from '../../providers/login-manager/login-manager';
+
 /**
  * Generated class for the LoginManagerPage page.
  *
@@ -14,11 +16,29 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class LoginManagerPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+      public navCtrl: NavController,
+      public navParams: NavParams,
+      public loginManager: LoginManagerProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginManagerPage');
   }
 
+  getLoginServerList() {
+    let loginServerList = [];
+    for ( let k in this.loginManager.loginServerList) {
+      loginServerList.push(this.loginManager.loginServerList[k]);
+    }
+    return loginServerList;
+  }
+
+  onEditLoginServer(event, loginServer, slidingItem) {
+    console.log("editLoginServer");
+  }
+
+  onDeleteLoginServer(event, loginServer, slidingItem) {
+    console.log("deleteLoginServer");
+  }
 }

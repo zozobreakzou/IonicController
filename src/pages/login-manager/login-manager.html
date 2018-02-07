@@ -8,11 +8,37 @@
 
   <ion-navbar>
     <ion-title>LoginManager</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="onAddLoginServer()">
+        <ion-icon name="add" item-left></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list radio-group [(ngModel)]="loginManager.currentLoginServer">
+    <ion-item-sliding *ngFor="let loginServer of getLoginServerList()" #slidingItem>
+      <ion-item>
+          <ion-radio item-left [value]="loginServer" [(checked)]="loginServer == loginManager.currentLoginServer"></ion-radio>
+          <ion-label>
+            <p class="login-server-name">{{loginServer.name}}</p>
+            <p class="login-server-address">{{loginServer.address}}</p>
+          </ion-label>
+      </ion-item>
 
+      <ion-item-options side="right">
+        <button ion-button class="edit-button" *ngIf="!loginServer.autoDiscovered" (click)="onEditLoginServer($event, loginServer, slidingItem)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <button ion-button class="delete-button" *ngIf="!loginServer.autoDiscovered" (click)="onDeleteLoginServer($event, loginServer, slidingItem)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

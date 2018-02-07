@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { LoginFormPage } from '../pages/login-form/login-form';
+import { LoginManagerPage } from "../pages/login-manager/login-manager";
 import { ControllerPage } from '../pages/controller/controller';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -19,7 +20,8 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
   declarations: [
     MyApp,
     LoginFormPage,
-    ControllerPage
+    LoginManagerPage,
+    ControllerPage,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
   entryComponents: [
     MyApp,
     LoginFormPage,
+    LoginManagerPage,
     ControllerPage
   ],
   providers: [
