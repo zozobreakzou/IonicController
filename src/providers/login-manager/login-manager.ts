@@ -42,12 +42,17 @@ export class LoginManagerProvider {
   }
 
   public saveToStorage() : void {
-    if ( Object.keys(this.loginServerList).length > 0 ) {
-      this.storage.set("login_manager", {
-        loginServerList: this.loginServerList,
-        currentLoginServer: this.currentLoginServer.address
-      });
+    let serverListByFilled = [];
+    for ( let k in this.loginServerList ) {
+      if ( this.loginServerList[k].filledByUser ) {
+        serverListByFilled.push(this.loginServerList[k]);
+      }
     }
+
+    this.storage.set("login_manager", {
+      loginServerList: serverListByFilled,
+      currentLoginServer: this.currentLoginServer.address
+    });
   }
 
   public addLoginServerByDiscovery(address: string, port: number, name: string) : void {
@@ -88,6 +93,7 @@ export class LoginManagerProvider {
         password:       undefined
       }
     }
+    this.saveToStorage();
   }
 
   public removeLoginServerByDiscovery(address : string) {
