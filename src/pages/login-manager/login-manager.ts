@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { LoginManagerProvider } from '../../providers/login-manager/login-manager';
+import { LoginManagerProvider, LoginServerInfo } from '../../providers/login-manager/login-manager';
+import { EditLoginServerPage } from '../edit-login-server/edit-login-server';
+import { ItemSliding } from 'ionic-angular/components/item/item-sliding';
 
 /**
  * Generated class for the LoginManagerPage page.
@@ -34,11 +36,17 @@ export class LoginManagerPage {
     return loginServerList;
   }
 
-  onEditLoginServer(event, loginServer, slidingItem) {
-    console.log("editLoginServer");
+  onAddLoginServer() {
+    this.navCtrl.push(EditLoginServerPage, {loginServer: null});
   }
 
-  onDeleteLoginServer(event, loginServer, slidingItem) {
+  onEditLoginServer(event, loginServer: LoginServerInfo, slidingItem : ItemSliding) {
+    console.log("editLoginServer");
+    this.navCtrl.push(EditLoginServerPage, {loginServer: loginServer});
+  }
+
+  onDeleteLoginServer(event, loginServer: LoginServerInfo, slidingItem: ItemSliding) {
     console.log("deleteLoginServer");
+    this.loginManager.removeLoginServerByFilled(loginServer.address);
   }
 }
