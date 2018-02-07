@@ -6,8 +6,8 @@ export class LoginServerInfo {
   public  address:         string;
   public  port:            number;
   public  name:            string;
-  public  autoDiscovered:  boolean;
-  public  filledByUser:    boolean;
+  public  autoDiscovered:  boolean = false;
+  public  filledByUser:    boolean = false;
 
   public  username:        string;
   public  password:        string;
@@ -42,16 +42,16 @@ export class LoginManagerProvider {
   }
 
   public saveToStorage() : void {
-    let serverListByFilled = [];
+    let serverListByFilled = {};
     for ( let k in this.loginServerList ) {
       if ( this.loginServerList[k].filledByUser ) {
-        serverListByFilled.push(this.loginServerList[k]);
+        serverListByFilled[k] = this.loginServerList[k];
       }
     }
 
     this.storage.set("login_manager", {
       loginServerList: serverListByFilled,
-      currentLoginServer: this.currentLoginServer.address
+      currentLoginServer: this.currentLoginServer ? this.currentLoginServer.address : null
     });
   }
 
@@ -87,8 +87,8 @@ export class LoginManagerProvider {
         address:        address,
         port:           port,
         name:           name,
-        autoDiscovered: true,
-        filledByUser:   false,
+        autoDiscovered: false,
+        filledByUser:   true,
         username:       undefined,
         password:       undefined
       }
