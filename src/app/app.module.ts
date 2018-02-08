@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { TreeModule } from 'ng2-tree';
 
 import { MyApp } from './app.component';
 import { LoginFormPage } from '../pages/login-form/login-form';
@@ -27,6 +28,7 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
   ],
   imports: [
     BrowserModule,
+    TreeModule,
     IonicModule.forRoot(MyApp, {mode: 'ios'}),
     IonicStorageModule.forRoot()
   ],
