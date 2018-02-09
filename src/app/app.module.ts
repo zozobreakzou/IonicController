@@ -8,6 +8,7 @@ import { LoginFormPage } from '../pages/login-form/login-form';
 import { LoginManagerPage } from "../pages/login-manager/login-manager";
 import { ControllerPage } from '../pages/controller/controller';
 import { EditLoginServerPage } from '../pages/edit-login-server/edit-login-server';
+import { ServerTreePage } from "../pages/server-tree/server-tree";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,6 +26,7 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
     LoginManagerPage,
     ControllerPage,
     EditLoginServerPage,
+    ServerTreePage,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,8 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
     LoginFormPage,
     LoginManagerPage,
     ControllerPage,
-    EditLoginServerPage
+    EditLoginServerPage,
+    ServerTreePage
   ],
   providers: [
     StatusBar,

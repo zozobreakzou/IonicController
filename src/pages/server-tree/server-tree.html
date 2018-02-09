@@ -14,5 +14,5 @@
 
 
 <ion-content padding>
-
+    <tree [tree]="serverTreeModel" #treeServer (menuItemSelected)="onMenuItemSelected($event)"></tree>
 </ion-content>
