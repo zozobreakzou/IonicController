@@ -18,6 +18,7 @@ import { Network } from '@ionic-native/network';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
+import { MwConnectionProvider } from '../providers/mw-connection/mw-connection';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
     Zeroconf,
     Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    LoginManagerProvider
+    LoginManagerProvider,
+    MwConnectionProvider
   ]
 })
 export class AppModule {}
