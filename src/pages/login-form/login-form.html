@@ -24,6 +24,9 @@
   <div class='login-form-center-div'>
     <form class="login-form" (ngSubmit)="doLogin()"  #loginForm="ngForm">
 
+      <h1 align="center">{{loginManager.currentLoginServer?.address}}</h1>
+      <br/>
+
       <ion-item class="login-input-item">
         <ion-label class="login-input-label">
           <ion-icon class='login-input-icon' name="person"></ion-icon>
@@ -52,12 +55,12 @@
       </ion-item>
 
       <div class="login-container-div login-container-remember">
-        <ion-checkbox [(ngModel)]="remberMe" name="remberMe"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="loginManager.remberAccount" name="remberMe"></ion-checkbox>
         <ion-label>remberMe</ion-label>
       </div>
 
       <div class="login-container-div">
-        <button class="login-submit-button" type="submit" ion-button block [disabled]="!loginForm.form.valid">login</button>
+        <button class="login-submit-button" type="submit" ion-button block [disabled]="!loginForm.form.valid||!loginManager.currentLoginServer">login</button>
       </div>
 
     </form>

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
-import { ControllerPage } from '../controller/controller';
 import { LoginManagerPage } from "../login-manager/login-manager";
+import { ServerTreePage } from "../server-tree/server-tree";
+
+import { LoginManagerProvider } from "../../providers/login-manager/login-manager";
+import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 
 /**
  * Generated class for the LoginFormPage page.
@@ -17,16 +21,70 @@ import { LoginManagerPage } from "../login-manager/login-manager";
 })
 export class LoginFormPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private alertCtrl: AlertController,
+    public loginManager: LoginManagerProvider,
+    public mwConnection: MwConnectionProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginFormPage');
   }
 
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter LoginFormPage');
+    this.username = this.loginManager.currentLoginServer ? this.loginManager.currentLoginServer.username : "";
+    this.password = this.loginManager.currentLoginServer ? this.loginManager.currentLoginServer.password : "";
+  }
+
   doLogin() {
-    this.navCtrl.push(ControllerPage, {
-      controller_url: "http://10.3.70.4:8089/html/output/index.html"
+    this.mwConnection
+    .login("wss://"+this.loginManager.currentLoginServer.address+":"+this.loginManager.currentLoginServer.port, this.username, this.password)
+    .then((response) => {
+      console.log("login success.");
+
+      this.loginManager.setLogingAccount(this.username, this.password);
+      return this.mwConnection.getServerTree();
+    })
+    .then((response) => {
+      console.log("getServerTree success.");
+      this.mwConnection.logout();
+
+      let serverTree = {
+        info: {
+          name: this.loginManager.currentLoginServer.name,
+          ip:   this.loginManager.currentLoginServer.address,
+          port: this.loginManager.currentLoginServer.port,
+          username: this.username,
+          password: this.password
+        },
+        child_array: response.body.cascade_server_tree.child_array
+      }
+      this.navCtrl.push(ServerTreePage, {
+        severTree: serverTree
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+      this.mwConnection.logout();
+
+      let subTitle: string;
+      if ( e instanceof(Event) ) {
+        subTitle = e.type;
+      } else if ( e instanceof Error ) {
+        subTitle = e.message;
+      } else {
+        subTitle = e.toString();
+      }
+
+      let alert = this.alertCtrl.create({
+        title: 'Login Error',
+        subTitle: subTitle,
+        buttons: ['Ok']
+      });
+      alert.present();
     });
   }
 
@@ -52,6 +110,4 @@ export class LoginFormPage {
 
   private username: string  = "";
   private password: string  = "";
-  private remberMe: boolean = true;
-
 }
