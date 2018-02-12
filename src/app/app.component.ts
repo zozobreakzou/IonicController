@@ -16,7 +16,7 @@ import { LoginManagerProvider } from '../providers/login-manager/login-manager';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginFormPage;
+  rootPage: any;
 
   loginServerList: Array<string> = [];
 
@@ -35,10 +35,12 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-
       this.loginManager.loadFromStorage().then(() => {
+
+        this.nav.push(LoginFormPage);
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+
         this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
           if (result.action == 'resolved') {
             console.log('service resolved', result.service);
