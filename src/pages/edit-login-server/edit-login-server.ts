@@ -59,12 +59,7 @@ export class EditLoginServerPage {
       return;
 
     if ( this.loginServer ) {
-      this.loginManager.removeLoginServerByFilled(this.loginServer.address);
-
-      this.loginServer.address = this.serverAddress;
-      this.loginServer.name = this.serverName;
-      this.loginServer.port = parseInt(this.serverPort);
-      this.loginManager.addLoginServerByFilled(this.loginServer.address, this.loginServer.port, this.loginServer.name);
+      this.loginManager.editLoginServer(this.loginServer, this.serverAddress, parseInt(this.serverPort), this.serverName);
     } else {
       this.loginManager.addLoginServerByFilled(this.serverAddress, parseInt(this.serverPort), this.serverName);
     }

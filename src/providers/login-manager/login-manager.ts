@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { assert } from 'ionic-angular/util/util';
 
 export class LoginServerInfo {
   public  address:         string;
   public  port:            number;
   public  name:            string;
   public  autoDiscovered:  boolean = false;
-  public  filledByUser:    boolean = false;
+  public  filledByUser:    boolean = true;
 
   public  username:        string;
   public  password:        string;
@@ -17,6 +16,12 @@ export class LoginServerInfo {
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
+
+  storage structure: {
+    currentLoginServer: "address",
+    remberAccount:      true,
+    loginServerList:    {},
+  }
 */
 @Injectable()
 export class LoginManagerProvider {
@@ -27,34 +32,70 @@ export class LoginManagerProvider {
   }
 
   public loadFromStorage() : Promise<any> {
-    return new Promise<any>( (resolve) => {
-      this.storage.get("login_manager")
-      .then((login_manager) => {
-        if (login_manager) {
-          this.loginServerList = login_manager.loginServerList;
-          this.setCurrentLoginServer(login_manager.currentLoginServer);
-          this.remberAccount = login_manager.remberAccount;
-        }
-        resolve();
-      } ).catch( () => {
-        console.log("loadFromStorage exception.");
-      } );
+    let currentLoginServer : string;
+    return Promise.all([
+      this.storage.get("remberAccount")
+      .then( (v) => {
+        this._remberAccount = (v === undefined ? true : v);
+
+        console.log("storage get remberAccount resolved.");
+      })
+      .catch( (v) => {
+        console.log("storage get remberAccount rejected.");
+        this._remberAccount = true;
+      }),
+
+      this.storage.get("currentLoginServer")
+      .then( (v) => {
+        currentLoginServer = v;
+
+        console.log("storage get currentLoginServer resolved.");
+      })
+      .catch( (v) => { 
+        console.log("storage get currentLoginServer rejected.");
+      }),
+
+      this.storage.get("loginServerList")
+      .then( (v) => {
+        this._loginServerList = v || {};
+
+        console.log("storage get loginServerList resolved.");
+      })
+      .catch ( v => { 
+        console.log("storage get loginServerList rejected.");
+      })
+    ])
+    .then( (v) => {
+      if ( currentLoginServer in this.loginServerList ) {
+        this._currentLoginServer = this.loginServerList[currentLoginServer];
+      }
+
+      console.log("loadFromStorage LoginManagerProvider success.");
+    })
+    .catch( (v) => {
+      console.log("loadFromStorage LoginManagerProvider failed.");
     });
   }
 
-  public saveToStorage() : void {
+  private saveServerListToStorage() : void {
     let serverListByFilled = {};
     for ( let k in this.loginServerList ) {
       if ( this.loginServerList[k].filledByUser ) {
-        serverListByFilled[k] = this.loginServerList[k];
+        serverListByFilled[k] = {
+          address:  this.loginServerList[k].address,
+          port:     this.loginServerList[k].port,
+          name:     this.loginServerList[k].name,
+          autoDiscovered: false,
+          filledByUser:   true,
+
+          username: this.remberAccount ? this.loginServerList[k].username : undefined,
+          password: this.remberAccount ? this.loginServerList[k].password : undefined
+        }
+        this.loginServerList[k];
       }
     }
 
-    this.storage.set("login_manager", {
-      loginServerList: serverListByFilled,
-      currentLoginServer: this.currentLoginServer ? this.currentLoginServer.address : null,
-      remberAccount: this.remberAccount
-    });
+    this.storage.set("loginServerList", serverListByFilled);
   }
 
   public addLoginServerByDiscovery(address: string, port: number, name: string) : void {
@@ -95,11 +136,15 @@ export class LoginManagerProvider {
         password:       undefined
       }
     }
-    this.saveToStorage();
+    this.saveServerListToStorage();
   }
 
   public removeLoginServerByDiscovery(address : string) {
     if ( this.loginServerList.hasOwnProperty(address) ) {
+      if ( !this.loginServerList[address].autoDiscovered ) {
+        return;
+      }
+
       this.loginServerList[address].autoDiscovered = false;
       if(!this.loginServerList[address].filledByUser) {
         delete this.loginServerList[address];
@@ -109,45 +154,73 @@ export class LoginManagerProvider {
 
   public removeLoginServerByFilled(address : string) {
     if ( this.loginServerList.hasOwnProperty(address) ) {
+      if ( !this.loginServerList[address].filledByUser ) {
+        return;
+      }
+
       this.loginServerList[address].filledByUser = false;
       if(!this.loginServerList[address].autoDiscovered) {
         delete this.loginServerList[address];
       }
+      this.saveServerListToStorage();
     }
   }
 
-  public editLoginServer(address: string, port: number, name: string) : boolean {
-    if ( !this.loginServerList.hasOwnProperty(address) )
-      return false;
-
-    let existingLoginServer = this.loginServerList[address];
-    if ( existingLoginServer.autoDiscovered || !existingLoginServer.filledByUser ) {
+  public editLoginServer(loginServer: LoginServerInfo, address: string, port: number, name: string) : boolean {
+    if ( loginServer.autoDiscovered || !loginServer.filledByUser ) {
       return false;
     }
 
-    existingLoginServer.port = port;
-    existingLoginServer.name = name;
-    return true;
-  }
+    if ( loginServer.address == address ) {
+      loginServer.name = name;
+      loginServer.port = port;
+    } else {
+      if ( address in this.loginServerList ) {
+        return false;
+      }
 
-  public setCurrentLoginServer(address : string) : void {
-    if ( this.loginServerList.hasOwnProperty(address) ) {
-      this.currentLoginServer = this.loginServerList[address];
+      delete this.loginServerList[loginServer.address];
+
+      loginServer.address = address;
+      loginServer.port = port;
+      loginServer.name = name;
+
+      this.loginServerList[loginServer.address] = loginServer;
+      this.saveServerListToStorage();
+      return true;
     }
   }
 
-  public setLogingAccount(username: string, password: string) : void {
+  setLogingAccount(username: string, password: string) : void {
     if ( this.currentLoginServer ) {
       this.currentLoginServer.username = username;
       this.currentLoginServer.password = password;
     }
+    this.saveServerListToStorage();
   }
 
-  public setRemberAccount(rember: boolean) {
-    this.remberAccount = rember;
+  get loginServerList() {
+    return this._loginServerList;
   }
 
-  public  loginServerList = { };   // keyed by address
-  public  currentLoginServer : LoginServerInfo;
-  private remberAccount : boolean = true;
+  get currentLoginServer() : LoginServerInfo {
+    return this._currentLoginServer;
+  }
+  set currentLoginServer(s: LoginServerInfo) {
+    this._currentLoginServer = s;
+    this.storage.set("currentLoginServer", this.currentLoginServer ? this.currentLoginServer.address : null);
+  }
+
+  get remberAccount() : boolean {
+    return this._remberAccount;
+  }
+  set remberAccount(v: boolean) {
+    this._remberAccount = v;
+    this.storage.set("remberAccount", this.remberAccount);
+    this.saveServerListToStorage();
+  }
+
+  private _loginServerList = { };   // keyed by address
+  private _currentLoginServer : LoginServerInfo;
+  private _remberAccount : boolean = true;
 }
