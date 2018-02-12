@@ -23,6 +23,9 @@ class MwConnection {
 
   open(address: string, onClose?) : Promise<any> {
     assert(!this.ws || this.ws.readyState==WebSocket.CLOSED, "ws should be null or closed");
+    if ( this.ws && this.ws.readyState!=WebSocket.CLOSED ) {
+      return Promise.reject(new Event("logined or logining"));
+    }
 
     return new Promise((resolve, reject) => {
       this.uid = 0;
@@ -167,7 +170,7 @@ export class MwConnectionProvider {
         if(response.body.loginSuccess) {
           return Promise.resolve(response);
         } else {
-          return Promise.reject(new Error("login error:"+response.loginDescription ) );
+          return Promise.reject(new Error("login error:" + response.errorStr ) );
         }
     });
   }
