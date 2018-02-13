@@ -14,3 +14,13 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.loading-ios .loading-wrapper {
+    background: transparent;
+    justify-content: center;
+}
+
+ion-spinner {
+    width: 80px !important;
+    height: 80px !important;
+}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 
 import { LoginManagerPage } from "../login-manager/login-manager";
 import { ServerTreePage } from "../server-tree/server-tree";
@@ -25,6 +26,7 @@ export class LoginFormPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     public loginManager: LoginManagerProvider,
     public mwConnection: MwConnectionProvider) {
   }
@@ -40,6 +42,9 @@ export class LoginFormPage {
   }
 
   doLogin() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+
     this.mwConnection
     .login("wss://"+this.loginManager.currentLoginServer.address+":"+this.loginManager.currentLoginServer.port, this.username, this.password)
     .then((response) => {
@@ -51,6 +56,8 @@ export class LoginFormPage {
     .then((response) => {
       console.log("getServerTree success.");
       this.mwConnection.logout();
+
+      loading.dismiss();
 
       let serverTree = {
         info: {
@@ -69,6 +76,7 @@ export class LoginFormPage {
     .catch((e) => {
       console.log(e);
       this.mwConnection.logout();
+      loading.dismiss();
 
       let subTitle: string;
       if ( e instanceof(Event) ) {
