@@ -1,7 +1,12 @@
 import { Component, ViewChild} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 
 import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem } from 'ng2-tree';
+
+import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
+import { LoginServerInfo } from "../../providers/login-manager/login-manager";
 
 /**
  * Generated class for the ServerTreePage page.
@@ -16,49 +21,99 @@ import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuIte
 })
 export class ServerTreePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+      public navCtrl: NavController,
+      public navParams: NavParams,
+      private alertCtrl: AlertController,
+      private loadingCtrl: LoadingController,
+      private mwConnection: MwConnectionProvider) {
+
+    this.loginServer = this.navParams.data.loginServer;
+
+    let loginServerInfo = {
+      name: this.loginServer.name,
+      ip:   this.loginServer.address,
+      port: this.loginServer.port,
+      username: this.loginServer.username,
+      password: this.loginServer.password
+    };
+
+    this.serverTreeModel = {
+      settings: {
+        leftMenu: true,
+        rightMenu: false,
+        menuItems: [
+          { name: 'go',  action: NodeMenuItemAction.Custom, cssClass: 'fa fa-arrow-right' },
+        ],
+      },
+      id: 1,
+      value: loginServerInfo.name,
+      serverInfo: loginServerInfo,
+      children: [
+      ]
+    };
+
+    this.fetchChildTree();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServerTreePage');
   }
 
-  public onMenuItemSelected(e: MenuItemSelectedEvent) {
+  onMenuItemSelected(e: MenuItemSelectedEvent) {
 
   }
 
-  public serverTreeModel: TreeModel = {
-    settings: {
-      leftMenu: true,
-      rightMenu: false,
-      menuItems: [
-        { name: 'go',  action: NodeMenuItemAction.Custom, cssClass: 'fa fa-arrow-right' },
-      ],
-    },
-    id: 0,
-    value: 'Main Login Server',
-    userdata: "zozo",
-    children: [
-      {
-        value: '上海',
-        id: 11,
-        children: [
-          {value: 'server1', id: 12, userdata: "zozo12"},
-          {value: 'server2', id: 13},
-          {value: 'server3', id: 14},
-        ]
-      },
-      {
-        value: '北京',
-        id: 21,
-        children: [
-          {value: 'server1', id: 22},
-          {value: 'server2', id: 23},
-          {value: 'server3', id: 24},
-        ]
-      },
-    ]
-  };
+  private fetchChildTree() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
 
-  @ViewChild('treeServer') treeServer;
+    this.mwConnection.getServerTree()
+    .then( (response) => {
+      loading.dismiss();
+
+      this.treeId = 2;
+      let children = this.fillTreeModelChild(response.body.cascade_server_tree.child_array);
+      this.treeServer.getControllerByNodeId(1).setChildren(children);
+    })
+    .catch( (v) => {
+      loading.dismiss();
+
+      this.alertCtrl.create({
+        title: 'Error',
+        subTitle: "get server tree error.",
+        buttons: ['Ok']
+      });
+    });
+  }
+
+  private fillTreeModelChild(child_array) : TreeModel[] {
+    if ( !Array.isArray(child_array) || child_array.length == 0 ) {
+      return;
+    }
+
+    let children : TreeModel[] = [];
+    for ( let serverInfo of child_array ) {
+      let childTreeModel : TreeModel = {
+        id: this.treeId++,
+        value: serverInfo.name,
+        serverInfo: serverInfo,
+      };
+      children.push(childTreeModel);
+
+      let subChildren = this.fillTreeModelChild(serverInfo.child_array);
+      if( subChildren ) {
+        childTreeModel.children = subChildren;
+      }
+    }
+
+    return children;
+  }
+
+
+  private loginServer: LoginServerInfo;
+  private serverTreeModel: TreeModel;
+  private treeId: number;
+
+  @ViewChild('treeServer') treeServer : TreeComponent;
 }
