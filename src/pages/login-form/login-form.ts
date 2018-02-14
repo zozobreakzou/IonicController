@@ -6,7 +6,7 @@ import { LoadingController } from 'ionic-angular';
 import { LoginManagerPage } from "../login-manager/login-manager";
 import { ServerTreePage } from "../server-tree/server-tree";
 
-import { LoginManagerProvider } from "../../providers/login-manager/login-manager";
+import { LoginManagerProvider, LoginServerInfo } from "../../providers/login-manager/login-manager";
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 
 /**
@@ -51,26 +51,11 @@ export class LoginFormPage {
       console.log("login success.");
 
       this.loginManager.setLogingAccount(this.username, this.password);
-      return this.mwConnection.getServerTree();
-    })
-    .then((response) => {
-      console.log("getServerTree success.");
-      this.mwConnection.logout();
 
       loading.dismiss();
 
-      let serverTree = {
-        info: {
-          name: this.loginManager.currentLoginServer.name,
-          ip:   this.loginManager.currentLoginServer.address,
-          port: this.loginManager.currentLoginServer.port,
-          username: this.username,
-          password: this.password
-        },
-        child_array: response.body.cascade_server_tree.child_array
-      }
       this.navCtrl.push(ServerTreePage, {
-        severTree: serverTree
+        loginServer: LoginServerInfo
       });
     })
     .catch((e) => {
@@ -88,7 +73,7 @@ export class LoginFormPage {
       }
 
       let alert = this.alertCtrl.create({
-        title: 'Login Error',
+        title: 'Error',
         subTitle: subTitle,
         buttons: ['Ok']
       });
