@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 
-import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem } from 'ng2-tree';
+import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
 
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 import { LoginServerInfo } from "../../providers/login-manager/login-manager";
@@ -45,6 +45,9 @@ export class ServerTreePage {
         menuItems: [
           { name: 'go',  action: NodeMenuItemAction.Custom, cssClass: 'fa fa-arrow-right' },
         ],
+        cssClasses: {
+          empty: 'node-leaf disabled'
+        },
       },
       id: 1,
       value: loginServerInfo.name,
@@ -74,7 +77,11 @@ export class ServerTreePage {
 
       this.treeId = 2;
       let children = this.fillTreeModelChild(response.body.cascade_server_tree.child_array);
-      this.treeServer.getControllerByNodeId(1).setChildren(children);
+      let rootController = this.treeServer.getControllerByNodeId(1);
+      rootController.setChildren([]);
+      for( let child of children ) {
+        rootController.addChild(child);
+      }
     })
     .catch( (v) => {
       loading.dismiss();
