@@ -2,9 +2,11 @@ import { Component, ViewChild} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
+import { ActionSheetController } from 'ionic-angular';
 
 import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
 
+import { ControllerPage } from "../controller/controller"
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 import { LoginServerInfo } from "../../providers/login-manager/login-manager";
 
@@ -26,6 +28,7 @@ export class ServerTreePage {
       public navParams: NavParams,
       private alertCtrl: AlertController,
       private loadingCtrl: LoadingController,
+      private actionSheetCtrl: ActionSheetController,
       private mwConnection: MwConnectionProvider) {
 
     this.loginServer = this.navParams.data.loginServer;
@@ -40,10 +43,9 @@ export class ServerTreePage {
 
     this.serverTreeModel = {
       settings: {
-        leftMenu: true,
+        leftMenu: false,
         rightMenu: false,
         menuItems: [
-          { name: 'go',  action: NodeMenuItemAction.Custom, cssClass: 'fa fa-arrow-right' },
         ],
         cssClasses: {
           empty: 'node-leaf disabled'
@@ -61,6 +63,35 @@ export class ServerTreePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServerTreePage');
+  }
+
+  onItemSelected(e: NodeSelectedEvent) {
+    let actionSheet = this.actionSheetCtrl.create({
+      cssClass: "action-sheet-group-overflow-auto",
+      buttons: [
+        {
+          text: 'goto',
+          role: 'destructive',
+          handler: () => {
+            let navTransition = actionSheet.dismiss();
+            navTransition.then(() => {
+              this.navCtrl.push(ControllerPage, {controller_url: "http://10.3.70.6:8089/html/output/index.html"});
+            });
+            return false;
+          }
+        },
+        {
+          text: 'cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            return true;
+          }
+        }
+      ]
+    });
+ 
+    actionSheet.present();
   }
 
   onMenuItemSelected(e: MenuItemSelectedEvent) {
