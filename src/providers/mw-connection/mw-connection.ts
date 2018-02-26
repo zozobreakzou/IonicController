@@ -181,9 +181,8 @@ export class MwConnectionProvider {
 
   getServerTree() : Promise<any> {
     let request_body = {
-      path: ""
     };
-    return this.connection.send("", request_body);
+    return this.connection.send("GETCASCADESERVERTREE", request_body);
   }
 
   private onClose(e: Event) {

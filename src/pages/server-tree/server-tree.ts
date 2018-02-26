@@ -107,7 +107,11 @@ export class ServerTreePage {
       loading.dismiss();
 
       this.treeId = 2;
-      let children = this.fillTreeModelChild(response.body.cascade_server_tree.child_array);
+      let children = [];
+      if ( response.errorCode == 0 && response.body && response.body.error_code == "CascadeServerError_OK" && response.body.cascade_server_tree ) {
+        children = this.fillTreeModelChild(response.body.cascade_server_tree.child_array);
+      }
+
       let rootController = this.treeServer.getControllerByNodeId(1);
       rootController.setChildren([]);
       for( let child of children ) {
@@ -134,7 +138,7 @@ export class ServerTreePage {
     for ( let serverInfo of child_array ) {
       let childTreeModel : TreeModel = {
         id: this.treeId++,
-        value: serverInfo.name,
+        value: serverInfo.info.name,
         serverInfo: serverInfo,
       };
       children.push(childTreeModel);
