@@ -42,11 +42,13 @@ export class LoginManagerPage {
 
   onEditLoginServer(event, loginServer: LoginServerInfo, slidingItem : ItemSliding) {
     console.log("editLoginServer");
+    slidingItem.close();
     this.navCtrl.push(EditLoginServerPage, {loginServer: loginServer});
   }
 
   onDeleteLoginServer(event, loginServer: LoginServerInfo, slidingItem: ItemSliding) {
     console.log("deleteLoginServer");
+    slidingItem.close();
     this.loginManager.removeLoginServerByFilled(loginServer.address);
   }
 }
