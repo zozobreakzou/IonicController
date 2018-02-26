@@ -55,7 +55,7 @@ export class LoginFormPage {
       loading.dismiss();
 
       this.navCtrl.push(ServerTreePage, {
-        loginServer: LoginServerInfo
+        loginServer: this.loginManager.currentLoginServer
       });
     })
     .catch((e) => {
