@@ -9,5 +9,8 @@
 
 
 <ion-content fullscreen>
+    <button ion-button class="fixed-top-right-button" (click)="onExit()">
+      <ion-icon name="exit"></ion-icon>
+    </button>
     <iframe class="controller-frame-fullscreen" [src]="controller_url" frameborder="0"></iframe>
 </ion-content>

@@ -6,4 +6,9 @@ page-controller {
         min-height: 100%;
         border: none;
     }
+    .fixed-top-right-button {
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
 }

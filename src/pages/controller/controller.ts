@@ -37,6 +37,8 @@ export class ControllerPage {
     console.log('ionViewWillLeave ControllerPage');
     this.screenOrientation.unlock();
   }
-
+  onExit() {
+    this.navCtrl.pop();
+  }
   private controller_url: SafeResourceUrl;
 }
