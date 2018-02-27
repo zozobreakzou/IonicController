@@ -75,7 +75,11 @@ export class ServerTreePage {
           handler: () => {
             let navTransition = actionSheet.dismiss();
             navTransition.then(() => {
-              this.navCtrl.push(ControllerPage, {controller_url: "http://10.3.70.6:8089/html/output/index.html"});
+              let server_info = e.node.node.serverInfo.info;
+              let target_url: string = "http://" + server_info.ip + ":38080/H5DsgFiles/DesingerWebsite/pageviewer.html"
+                                     + "?maxwallip="+server_info.ip + "&maxwallport="+server_info.port + "&user="+server_info.username + "&pwd="+server_info.password;
+
+              this.navCtrl.push(ControllerPage, {controller_url: target_url});
             });
             return false;
           }
