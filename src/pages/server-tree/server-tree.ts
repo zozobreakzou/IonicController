@@ -35,11 +35,13 @@ export class ServerTreePage {
     this.loginServer = this.navParams.data.loginServer;
 
     let loginServerInfo = {
-      name: this.loginServer.name,
-      ip:   this.loginServer.address,
-      port: this.loginServer.port,
-      username: this.loginServer.username,
-      password: this.loginServer.password
+      info: {
+        name: this.loginServer.name,
+        ip:   this.loginServer.address,
+        port: this.loginServer.port,
+        username: this.loginServer.username,
+        password: this.loginServer.password
+      }
     };
 
     this.serverTreeModel = {
@@ -53,7 +55,7 @@ export class ServerTreePage {
         },
       },
       id: 1,
-      value: loginServerInfo.name,
+      value: loginServerInfo.info.name,
       serverInfo: loginServerInfo,
       children: [
       ]
