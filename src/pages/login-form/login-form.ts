@@ -42,7 +42,7 @@ export class LoginFormPage {
   }
 
   doLogin() {
-    let loading = this.loadingCtrl.create();
+    let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     loading.present();
 
     this.mwConnection

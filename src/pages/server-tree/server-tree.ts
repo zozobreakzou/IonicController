@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
+import { Refresher } from'ionic-angular';
 
 import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
 
@@ -57,12 +58,21 @@ export class ServerTreePage {
       children: [
       ]
     };
-
-    this.fetchChildTree();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServerTreePage');
+    let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
+    loading.present();
+
+    this.fetchChildTree()
+    .then( () => {
+      loading.dismiss();
+      this.mwConnection.logout();
+    })
+    .catch( () => {
+      this.mwConnection.logout();
+    });
   }
 
   onItemSelected(e: NodeSelectedEvent) {
@@ -102,14 +112,26 @@ export class ServerTreePage {
 
   }
 
-  private fetchChildTree() {
-    let loading = this.loadingCtrl.create();
-    loading.present();
+  private onRefresh(refresher: Refresher) {
+    this.mwConnection
+    .login("wss://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
+    .then((response) => {
+      console.log("login success.");
+      return this.fetchChildTree();
+    })
+    .then(() => { 
+      refresher.complete();
+      this.mwConnection.logout();
+    })
+    .catch(() => {
+      refresher.complete();
+      this.mwConnection.logout();
+    });
+  }
 
-    this.mwConnection.getServerTree()
+  private fetchChildTree() : Promise<any> {
+    return this.mwConnection.getServerTree()
     .then( (response) => {
-      loading.dismiss();
-
       this.treeId = 2;
       let children = [];
       if ( response.errorCode == 0 && response.body && response.body.error_code == "CascadeServerError_OK" && response.body.cascade_server_tree ) {
@@ -123,8 +145,6 @@ export class ServerTreePage {
       }
     })
     .catch( (v) => {
-      loading.dismiss();
-
       this.alertCtrl.create({
         title: 'Error',
         subTitle: "get server tree error.",
