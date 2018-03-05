@@ -105,4 +105,13 @@ page-login-form {
         text-indent: 0;
         color: white;
     }
+
+
+    .content-ios:not([no-bounce]) > .scroll-content::before {
+        bottom: 0;
+    }
+
+    .content-ios:not([no-bounce]) > .scroll-content::after {
+        top: 0;
+    }
 }
