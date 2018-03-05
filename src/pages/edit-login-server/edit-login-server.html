@@ -22,17 +22,17 @@
 
 <ion-content padding>
   <ion-item>
-        <ion-label>server name:</ion-label>
-        <ion-input type="text" placeholder="unique server name" [(ngModel)]="serverName" required></ion-input>
+    <ion-label class="edit-login-server-lebel">name:</ion-label>
+    <ion-input type="text" placeholder="unique server name" [(ngModel)]="serverName" required></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label>server address:</ion-label>
+    <ion-label class="edit-login-server-lebel">address:</ion-label>
     <ion-input type="text" placeholder="server ip address" [(ngModel)]="serverAddress" required></ion-input>
   </ion-item>
 
   <ion-item>
-      <ion-label>server port:</ion-label>
+      <ion-label class="edit-login-server-lebel">port:</ion-label>
       <ion-input type="number" min="1" max="65535" placeholder="server port" [(ngModel)]="serverPort" required></ion-input>
   </ion-item>
 </ion-content>
