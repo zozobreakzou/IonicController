@@ -31,7 +31,7 @@
         <ion-input #inputUsername type="text" [(ngModel)]="username" name="username" placeholder="username" required>
         </ion-input>
 
-        <button item-right type="button" ion-button clear tabIndex="0" class="login-input-clear-button" (tap)="onClearUsername()" [hidden]="!shouldShowClearUsernameBtn()">
+        <button item-right type="button" ion-button clear tabIndex="0" class="login-input-clear-button" (click)="onClearUsername()" [hidden]="!shouldShowClearUsernameBtn()">
           <ion-icon class="login-input-clear-icon" name="close-circle"></ion-icon>
         </button>
       </ion-item>
@@ -45,7 +45,7 @@
 
         <ion-input #inputPassword type="password" pattern="[\x00-\xff]+" [(ngModel)]="password" name="password" placeholder="password" required></ion-input>
 
-        <button item-right type="button" ion-button clear tabIndex="1" class="login-input-clear-button" (tap)="onClearPassword()" [hidden]="!shouldShowClearPasswordBtn()">
+        <button item-right type="button" ion-button clear tabIndex="1" class="login-input-clear-button" (click)="onClearPassword()" [hidden]="!shouldShowClearPasswordBtn()">
             <ion-icon class="login-input-clear-icon" name="close-circle"></ion-icon>
         </button>
       </ion-item>
