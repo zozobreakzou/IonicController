@@ -28,11 +28,11 @@
 
   <ion-item>
     <ion-label>server address:</ion-label>
-    <ion-input type="text" pattern="[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]" placeholder="server ip address" [(ngModel)]="serverAddress" required></ion-input>
+    <ion-input type="text" placeholder="server ip address" [(ngModel)]="serverAddress" required></ion-input>
   </ion-item>
 
   <ion-item>
       <ion-label>server port:</ion-label>
-      <ion-input type="text" pattern="[0-9]+" placeholder="server port" [(ngModel)]="serverPort" required></ion-input>
+      <ion-input type="number" min="1" max="65535" placeholder="server port" [(ngModel)]="serverPort" required></ion-input>
   </ion-item>
 </ion-content>

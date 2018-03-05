@@ -36,6 +36,12 @@ export class EditLoginServerPage {
     if (!this.serverName || this.serverName.length==0 || !this.serverAddress || this.serverAddress.length==0 || !this.serverPort || isNaN(parseInt(this.serverPort)))
       return false;
 
+    if( parseInt(this.serverPort)<=0 || parseInt(this.serverPort)>65535 )
+      return false;
+
+    if ( !this.serverAddress.match(/^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?$/) && !this.serverAddress.match(/^((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}$/) )
+      return false;
+
     // todo: check serverAddress is valid.
     if (this.loginServer) { // edit
       for(let k in this.loginManager.loginServerList) {
@@ -70,5 +76,5 @@ export class EditLoginServerPage {
   private loginServer:    LoginServerInfo;
   private serverName:     string;
   private serverAddress:  string;
-  private serverPort:     string;
+  private serverPort:     string = "7681";
 }
