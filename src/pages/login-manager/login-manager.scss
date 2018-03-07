@@ -1,3 +1,7 @@
 page-login-manager {
-
+    .open-slide-icon {
+        pointer-events: auto;
+        position: relative;
+        color: color($colors, primary);
+    }
 }

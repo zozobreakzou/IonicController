@@ -20,15 +20,17 @@
 
 
 <ion-content padding>
-  <ion-list radio-group [(ngModel)]="loginManager.currentLoginServer">
+  <ion-list radio-group [(ngModel)]="loginManager.currentLoginServer" #ionList>
     <ion-item-sliding *ngFor="let loginServer of getLoginServerList()" #slidingItem>
-      <ion-item>
+      <ion-item #item>
           <ion-radio item-left [value]="loginServer" [(checked)]="loginServer == loginManager.currentLoginServer"></ion-radio>
           <ion-label>
             <p class="login-server-name">{{loginServer.name}}</p>
             <p class="login-server-address">{{loginServer.address}}</p>
           </ion-label>
-      </ion-item>
+
+          <ion-icon class="open-slide-icon" name="arrow-dropleft-circle" item-right (click)="onOpenSlideItem($event, ionList, slidingItem, item)" *ngIf="!loginServer.autoDiscovered"></ion-icon>
+        </ion-item>
 
       <ion-item-options side="right">
         <button ion-button class="edit-button" *ngIf="!loginServer.autoDiscovered" (click)="onEditLoginServer($event, loginServer, slidingItem)">
