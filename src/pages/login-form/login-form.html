@@ -20,7 +20,7 @@
   <div class='login-form-center-div'>
     <form class="login-form" (ngSubmit)="doLogin()"  #loginForm="ngForm">
 
-      <h1 align="center">{{loginManager.currentLoginServer?.address}}</h1>
+      <h1 align="center">{{loginManager.currentLoginServer?.address || "please select a server first"}}</h1>
       <br/>
 
       <ion-item class="login-input-item">
