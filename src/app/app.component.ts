@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
+import { App } from 'ionic-angular/components/app/app';
+import { IonicApp } from 'ionic-angular/components/app/app-root';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -21,6 +23,8 @@ export class MyApp {
   loginServerList: Array<string> = [];
 
   constructor(
+      public app: App,
+      public ionicApp: IonicApp,
       public platform: Platform,
       public statusBar: StatusBar,
       public splashScreen: SplashScreen,
@@ -36,20 +40,24 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.loginManager.loadFromStorage().then(() => {
-
         this.nav.push(LoginFormPage);
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-
-        this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
-          if (result.action == 'resolved') {
-            console.log('service resolved', result.service);
-            this.loginManager.addLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0], result.service.port, result.service.name);
-          } else if(result.action == 'removed') {
-            console.log('service removed', result.service);
-            this.loginManager.removeLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0]);
-          } });
       });
+
+      this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
+        if (result.action == 'resolved') {
+          console.log('service resolved', result.service);
+          this.loginManager.addLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0], result.service.port, result.service.name);
+        } else if(result.action == 'removed') {
+          console.log('service removed', result.service);
+          this.loginManager.removeLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0]);
+        }
+      });
+
+      this.platform.registerBackButtonAction(() => {
+        this.ionicApp._getActivePortal().getActive().dismiss();
+      }, 1);
 
       this.network.onDisconnect().subscribe( () => {
         console.info('network was disconnected :-(');
