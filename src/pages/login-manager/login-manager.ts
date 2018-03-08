@@ -37,7 +37,15 @@ export class LoginManagerPage {
     for ( let k in this.loginManager.loginServerList) {
       loginServerList.push(this.loginManager.loginServerList[k]);
     }
-    return loginServerList;
+    return loginServerList.sort( (r1: LoginServerInfo, r2: LoginServerInfo) => {
+      let w1 = (r1.autoDiscovered?2:0) + (r1.filledByUser?1:0);
+      let w2 = (r2.autoDiscovered?2:0) + (r2.filledByUser?1:0);
+      if ( w1 == w2 ) {
+        return r1.address > r2.address ? 1 : -1;
+      } else {
+        return w2-w1;
+      }
+    } );
   }
 
   onAddLoginServer() {
