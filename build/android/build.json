@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "MaxWall.jks",
+            "storePassword": "MaxWall",
+            "alias": "MaxWall",
+            "password" : "MaxWall",
+            "keystoreType": ""
+        }
+    }
+}
