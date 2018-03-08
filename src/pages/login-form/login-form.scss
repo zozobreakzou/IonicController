@@ -22,30 +22,28 @@ page-login-form {
     }
     .login-container-div {
         display: flex;
-        padding: 4%;
     }
     .login-container-remember {
         align-items:center;
         justify-content:center;
+        padding: 4%;
     }
     .login-container-remember ion-label {
         flex: 0 1 auto;
         margin-left: 8px;
+    }
+    .login-server-label {
+        margin-top: 0;
     }
     .login-submit-button {
         width: 34%;
         height: 43px;
         margin: auto;
         border-radius: 100px;
-        font-family: "PingFangTC-Semibold";
-        font-size: 1.4rem;;
-        color: #FFFFFF;
-        letter-spacing: -0.08px;
-        line-height: 19px;
         border: none;
-        // &:active{
-        //   background-color: $active-color; 
-        // }
+        &:active{
+          background-color: color($colors, danger);
+        }
     }
     .item.item-block .item-inner {
         border-bottom: 0 !important;
@@ -64,8 +62,8 @@ page-login-form {
     }
     .login-input-label {
         color: #cacaca;
-        font-size: 2.6rem;
         margin-left: 8px;
+        font-size: 2.6rem;
     }
     
     .login-input-icon {
@@ -85,24 +83,16 @@ page-login-form {
 
     .login-input-item {
         width: 85%;
-        height: 5.5rem;
         margin: auto;
         border-radius: 100px;
         background-color: rgba(0, 0, 0, 0.4);
     }
 
     .login-input-item input {
-        font-size: 16px;
-        font-weight: 500;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: 0.1px;
         color: #ffffff;
     }
 
     .text-input::-webkit-input-placeholder {
-        text-indent: 0;
         color: white;
     }
 
