@@ -31,7 +31,6 @@ export class ControllerPage {
   }
   ionViewWillEnter() {
     console.log('ionViewWillEnter ControllerPage');
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
   }
   ionViewDidEnter() {
     console.log('ionViewDidEnter ControllerPage');
@@ -54,7 +53,6 @@ export class ControllerPage {
   }
   ionViewDidLeave() {
     console.log('ionViewWillLeave ControllerPage');
-    this.screenOrientation.unlock();
   }
 
   relayEvent(target, event) {
