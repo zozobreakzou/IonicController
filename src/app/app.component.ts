@@ -47,7 +47,7 @@ export class MyApp {
         this.splashScreen.hide();
       });
 
-      this.zeroConf.watch('_http._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
+      this.zeroConf.watch('_maxwall._wss._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {
         if (result.action == 'resolved') {
           console.log('service resolved', result.service);
           this.loginManager.addLoginServerByDiscovery(result.service.ipv4Addresses[0]||result.service.ipv6Addresses[0], result.service.port, result.service.name);
