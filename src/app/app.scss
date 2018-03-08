@@ -24,3 +24,18 @@
     width: 80px !important;
     height: 80px !important;
 }
+
+ion-toast[class*="toast-exit"] {
+    width: 50% !important;
+    right: 0px;
+    margin: 0 auto;
+   .toast-wrapper{
+     border-radius: 0px 0px 10px 10px !important;
+     background-color: color($colors, danger);
+     .toast-message{
+        text-align: center;
+        overflow: hidden;
+      }
+   }
+ }
+ 

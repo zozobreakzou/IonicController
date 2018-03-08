@@ -11,6 +11,7 @@ import { Network } from '@ionic-native/network';
 
 import { LoginFormPage } from '../pages/login-form/login-form';
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,6 +29,7 @@ export class MyApp {
       public platform: Platform,
       public statusBar: StatusBar,
       public splashScreen: SplashScreen,
+      public toastCtrl: ToastController,
       public zeroConf: Zeroconf,
       public network: Network,
       public loginManager: LoginManagerProvider) {
@@ -56,7 +58,27 @@ export class MyApp {
       });
 
       this.platform.registerBackButtonAction(() => {
-        this.ionicApp._getActivePortal().getActive().dismiss();
+        try {
+          this.ionicApp._getActivePortal().getActive().dismiss();
+        } catch (error) {
+          if ( this.nav.canGoBack() ) {
+            this.nav.pop();
+          } else {
+              if (this.backButtonPressed) {
+                this.platform.exitApp();
+              } else {
+                this.toastCtrl.create({
+                  message: 'press again to exit',
+                  duration: 2000,
+                  position: 'top',
+                  dismissOnPageChange: true,
+                  cssClass: "toast-exit center",
+                }).present();
+                this.backButtonPressed = true;
+                setTimeout(() => { this.backButtonPressed = false }, 2000);
+              }
+          }
+        }
       }, 1);
 
       this.network.onDisconnect().subscribe( () => {
@@ -64,4 +86,6 @@ export class MyApp {
       } );
     });
   }
+
+  private backButtonPressed : boolean = false;
 }
