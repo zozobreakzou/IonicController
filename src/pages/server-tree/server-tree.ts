@@ -110,10 +110,6 @@ export class ServerTreePage {
     actionSheet.present();
   }
 
-  onMenuItemSelected(e: MenuItemSelectedEvent) {
-
-  }
-
   private onRefresh(refresher: Refresher) {
     this.mwConnection
     .login("wss://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
