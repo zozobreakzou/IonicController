@@ -6,10 +6,10 @@ page-login-form {
         height: 100%;
 
         @media screen and (orientation: portrait) {
-            background-image: url('../assets/imgs/splash_bg_portrait.png');
+            //background-image: url('../assets/imgs/splash_bg_portrait.png');
         }
         @media screen and (orientation: landscape) {
-            background-image: url('../assets/imgs/splash_bg_landscape.png');
+            //background-image: url('../assets/imgs/splash_bg_landscape.png');
         }
 
         background-repeat: no-repeat;
