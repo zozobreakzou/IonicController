@@ -1,6 +1,7 @@
 @echo off
 
 echo adding platform android..., if firstly build, will take a long time
+call ionic cordova platform remove android
 call ionic cordova platform add android
 
 if /i "%1" == "--debug" (
