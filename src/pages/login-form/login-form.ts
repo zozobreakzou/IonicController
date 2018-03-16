@@ -37,8 +37,12 @@ export class LoginFormPage {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter LoginFormPage');
-    this.username = this.loginManager.currentLoginServer ? this.loginManager.currentLoginServer.username || "" : "";
-    this.password = this.loginManager.currentLoginServer ? this.loginManager.currentLoginServer.password || "" : "";
+    if ( this.loginManager.currentLoginServer && this.loginManager.currentLoginServer.username) {
+      this.username = this.loginManager.currentLoginServer.username;
+    }
+    if ( this.loginManager.currentLoginServer && this.loginManager.currentLoginServer.password ) {
+      this.password = this.loginManager.currentLoginServer.password;
+    }
   }
 
   doLogin() {
