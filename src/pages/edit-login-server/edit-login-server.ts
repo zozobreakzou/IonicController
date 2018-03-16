@@ -76,5 +76,5 @@ export class EditLoginServerPage {
   private loginServer:    LoginServerInfo;
   private serverName:     string;
   private serverAddress:  string;
-  private serverPort:     string = "7681";
+  private serverPort:     string = "7680";
 }

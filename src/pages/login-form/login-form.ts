@@ -46,7 +46,7 @@ export class LoginFormPage {
     loading.present();
 
     this.mwConnection
-    .login("wss://"+this.loginManager.currentLoginServer.address+":"+this.loginManager.currentLoginServer.port, this.username, this.password)
+    .login("ws://"+this.loginManager.currentLoginServer.address+":"+this.loginManager.currentLoginServer.port, this.username, this.password)
     .then((response) => {
       console.log("login success.");
 
