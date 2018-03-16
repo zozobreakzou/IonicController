@@ -1,4 +1,4 @@
-pre-requirements:
+﻿pre-requirements:
 1. install git and make git command in the PATH;
 2. install LTS version of Node;
 3. install ionic，cordova with admin user:
@@ -13,7 +13,14 @@ for android on windows:
 for ios on mac:
 4. install the latest xcode;
 5. login developer account in xcode;
-6. todo;
+6. enable xcode-select command-line
+   xcode-select --install
+7. install ios-deploy
+   $> sudo npm install -g --unsafe-perm=true --allow-root ios-deploy
+8. install CocoaPods
+   $> sudo gem install cocoapods
+   $> pod setup
+
 
 build:
 for android:
