@@ -72,7 +72,7 @@ export class MyApp {
                   duration: 2000,
                   position: 'top',
                   dismissOnPageChange: true,
-                  cssClass: "toast-exit center",
+                  cssClass: "mw-toast center",
                 }).present();
                 this.backButtonPressed = true;
                 setTimeout(() => { this.backButtonPressed = false }, 2000);

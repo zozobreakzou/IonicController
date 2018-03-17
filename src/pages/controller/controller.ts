@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 
-import {SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 /**
@@ -21,7 +22,8 @@ export class ControllerPage {
       public navCtrl: NavController,
       public navParams: NavParams,
       private sanitizer: DomSanitizer,
-      private screenOrientation: ScreenOrientation) {
+      private screenOrientation: ScreenOrientation,
+      public toastCtrl: ToastController) {
 
     this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(navParams.data.controller_url);
   }
@@ -67,6 +69,14 @@ export class ControllerPage {
         f.contentWindow.addEventListener(e, this.relayEventListener);
       }
     }
+
+    this.toastCtrl.create({
+      message: 'swipe right with two finger to go back',
+      duration: 2000,
+      position: 'top',
+      dismissOnPageChange: true,
+      cssClass: "mw-toast center",
+    }).present();
   }
   ionViewDidLeave() {
     console.log('ionViewWillLeave ControllerPage');
