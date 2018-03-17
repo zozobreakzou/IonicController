@@ -4,4 +4,8 @@ page-login-manager {
         position: relative;
         color: color($colors, primary);
     }
+
+    .item-ios p {
+        color: $text-color;
+    }
 }

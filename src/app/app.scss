@@ -29,13 +29,28 @@ ion-toast[class*="toast-exit"] {
     width: 50% !important;
     right: 0px;
     margin: 0 auto;
-   .toast-wrapper{
-     border-radius: 0px 0px 10px 10px !important;
-     background-color: color($colors, danger);
-     .toast-message{
-        text-align: center;
-        overflow: hidden;
-      }
-   }
- }
- 
+    .toast-wrapper{
+        border-radius: 0px 0px 10px 10px !important;
+        background-color: color($colors, danger);
+        .toast-message{
+            text-align: center;
+            overflow: hidden;
+        }
+    }
+}
+
+ion-content {
+    @media screen and (orientation: portrait) {
+    }
+    @media screen and (orientation: landscape) {
+        background-image: url('../assets/imgs/background_landscape.png');
+    }
+
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: scroll;
+}
+
+ion-navbar {
+    background-color: $background-color;
+}

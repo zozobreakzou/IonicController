@@ -1,5 +1,30 @@
 page-server-tree {
+    // disable the gap-line between nav-bar and content
+    // .has-refresher > .scroll-content {
+    //     margin-top: 0px;
+    //     border-top: 0px;
+    // }
 
+    tree-internal .tree .node-value {
+        display: inline-block;
+        color: $text-color;
+    }
+
+    tree-internal .tree .folding.node-collapsed:before {
+        color: color($colors, primary);
+    }
+
+    tree-internal .tree .folding.node-expanded:before {
+        color: color($colors, primary);
+    }
+
+    tree-internal .tree .folding.node-empty:before {
+        color: color($colors, primary);
+    }
+
+    tree-internal .tree .folding.node-leaf:before {
+        color: color($colors, primary);
+    }
 }
 
 .action-sheet-group-overflow-auto {

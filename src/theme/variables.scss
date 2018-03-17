@@ -22,8 +22,9 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
-
-
+$background-color: rgba(0, 0, 0, 0.4);
+$toolbar-background: $background-color;
+$text-color: #fff;
 
 // Named Color Variables
 // --------------------------------------------------
