@@ -8,4 +8,12 @@ page-login-manager {
     .item-ios p {
         color: $text-color;
     }
+
+    .list > .item-wrapper:last-child .item-block  {
+        border: none;
+    }
+
+    .list > .item-wrapper:last-child .item-block .item-inner {
+        border-bottom: 0.55px solid #c8c7cc;
+    }
 }
