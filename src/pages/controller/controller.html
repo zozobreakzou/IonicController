@@ -8,9 +8,6 @@
 </ion-header>
 
 
-<ion-content id="main_content" fullscreen (swipe)="onSwipe($event)" (tap)="onTap($event)">
-    <button ion-button class="fixed-top-right-button" (click)="onExit()">
-      <ion-icon name="exit"></ion-icon>
-    </button>
+<ion-content id="main_content">
     <iframe class="fullscreen" id="present_frame" [src]="controller_url" frameborder="0"></iframe>
 </ion-content>

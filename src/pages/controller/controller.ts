@@ -28,6 +28,23 @@ export class ControllerPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ControllerPage');
+
+    let Hammer = (<any>window).Hammer;
+    let content = document.getElementById("main_content");
+    let hm = new Hammer.Manager(content, {
+      recognizers: [
+        [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
+      ]
+    });
+
+    hm.on("panright", ()=>{
+      console.log("two pointer pan right.");
+      hm.destroy();
+      this.navCtrl.pop();
+    });
+  }
+  ionViewWillUnload() {
+    console.log('ionViewWillUnload ControllerPage');
   }
   ionViewWillEnter() {
     console.log('ionViewWillEnter ControllerPage');
@@ -83,15 +100,6 @@ export class ControllerPage {
         f.contentWindow.removeEventListener(event.type, this.relayEventListener);
       }
     }
-  }
-  onTap(e){
-    console.log("tap");
-  }
-  onSwipe(e) {
-    console.log("swipe");
-  }
-  onExit() {
-    this.navCtrl.pop();
   }
   private controller_url: SafeResourceUrl;
   private relayEventListener;
