@@ -5,6 +5,7 @@ import { IonicApp } from 'ionic-angular/components/app/app-root';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AndroidFullScreen } from '@ionic-native/android-full-screen';
 
 import { Zeroconf, ZeroconfResult } from '@ionic-native/zeroconf';
 import { Network } from '@ionic-native/network';
@@ -29,6 +30,7 @@ export class MyApp {
       public platform: Platform,
       public statusBar: StatusBar,
       public splashScreen: SplashScreen,
+      public androidFullScreen: AndroidFullScreen,
       public toastCtrl: ToastController,
       public zeroConf: Zeroconf,
       public network: Network,
@@ -45,6 +47,7 @@ export class MyApp {
         this.nav.push(LoginFormPage);
         this.statusBar.hide();
         this.splashScreen.hide();
+        this.androidFullScreen.immersiveMode();
       });
 
       this.zeroConf.watch('_maxwall._tcp.', 'local.').subscribe( (result : ZeroconfResult) => {

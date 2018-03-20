@@ -13,6 +13,7 @@ import { ServerTreePage } from "../pages/server-tree/server-tree";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { AndroidFullScreen } from '@ionic-native/android-full-screen';
 import { Zeroconf} from '@ionic-native/zeroconf';
 import { Network } from '@ionic-native/network';
 import { IonicStorageModule } from '@ionic/storage';
@@ -48,6 +49,7 @@ import { MwConnectionProvider } from '../providers/mw-connection/mw-connection';
     StatusBar,
     SplashScreen,
     ScreenOrientation,
+    AndroidFullScreen,
     Zeroconf,
     Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
