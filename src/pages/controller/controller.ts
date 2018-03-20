@@ -32,8 +32,8 @@ export class ControllerPage {
     console.log('ionViewDidLoad ControllerPage');
 
     let Hammer = (<any>window).Hammer;
-    let content = document.getElementById("main_content");
-    let hm = new Hammer.Manager(content, {
+    let container = document.getElementById("frame_container");
+    let hm = new Hammer.Manager(container, {
       recognizers: [
         [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
       ]
@@ -64,7 +64,7 @@ export class ControllerPage {
       for (let  e of event_types ) {
         f.contentWindow.removeEventListener(e, this.relayEventListener);
       }
-      this.relayEventListener = this.relayEvent.bind(this, document.getElementById("main_content"));
+      this.relayEventListener = this.relayEvent.bind(this, document.getElementById("frame_container"));
       for (let  e of event_types ) {
         f.contentWindow.addEventListener(e, this.relayEventListener);
       }
