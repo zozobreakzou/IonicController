@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { LoadingController, Loading } from 'ionic-angular';
 
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -23,6 +24,7 @@ export class ControllerPage {
       public navParams: NavParams,
       private sanitizer: DomSanitizer,
       private screenOrientation: ScreenOrientation,
+      private loadingCtrl: LoadingController,
       public toastCtrl: ToastController) {
 
     this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(navParams.data.controller_url);
@@ -30,6 +32,9 @@ export class ControllerPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ControllerPage');
+
+    this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
+    this.loading.present();
 
     let Hammer = (<any>window).Hammer;
     let container = document.getElementById("frame_container");
@@ -82,6 +87,14 @@ export class ControllerPage {
     console.log('ionViewWillLeave ControllerPage');
   }
 
+  onFrameLoad($event) {
+    console.log("onFrameLoad ControllerPage");
+    if ( this.loading ) {
+      this.loading.dismiss();
+      this.loading = null;
+    }
+  }
+
   relayEvent(target, event) {
     try {
       let newEvent = new event.constructor(event.type, event);
@@ -113,4 +126,5 @@ export class ControllerPage {
   }
   private controller_url: SafeResourceUrl;
   private relayEventListener;
+  private loading: Loading;
 }

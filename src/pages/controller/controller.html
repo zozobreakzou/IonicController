@@ -6,5 +6,5 @@
 -->
 
 <div class="fullscreen" id="frame_container">
-  <iframe class="fullscreen" id="present_frame" [src]="controller_url" frameborder="0"></iframe>
+  <iframe class="fullscreen" id="present_frame" [src]="controller_url" (load)="onFrameLoad($event)" frameborder="0"></iframe>
 </div>
