@@ -1,0 +1,23 @@
+html {
+    font-size: 96px;  // min-font-size=12px
+}
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+.container {
+    width: 20rem;  // 1920px
+}
+
+.large {
+	background-color: blue;
+	width: 20rem;
+	height: 0.5rem;
+}
+
+.small {
+	background-color: red;
+	width: 6.25rem;
+	height: 0.5rem;
+}

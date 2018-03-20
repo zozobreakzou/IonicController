@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="frame.css">
+</head>
+<body>
+    <div class="container">
+        <button id="zoomout">zoom out</button> <button id="zoomin">zoom in</button>
+        <div class="small"></div>
+        <div class="large"></div>
+    </div>
+</body>
+    <script type="text/javascript">
+        var base_font_size = 96;
+        console.log("setup html fontSize");
+        document.documentElement.style.fontSize = base_font_size * window.screen.width / 1920 + "px";
+        console.log("to: " + window.getComputedStyle(document.documentElement).fontSize);
+
+        zoomout.onclick = function() {
+            var cur = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+            document.documentElement.style.fontSize = cur * 1.1 + "px";
+        }
+        zoomin.onclick = function() {
+            var cur = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+            document.documentElement.style.fontSize = cur * 0.9 + "px";
+        }
+    </script>
+</html>
+
+
