@@ -3,21 +3,22 @@
 2. install LTS version of Node;
 3. install ionic，cordova with admin user:
    $> npm install -g ionic cordova
+4. make sure the build machine can access internet for installing npm modules and generating resource;
 
 for android on windows:
-4. install java development kit (JDK) 8 or later, 64bit version;
-5. install android studio 3.0.1 and android sdk using android studio's sdk manager;
-6. set system variable "JAVA_HOME" to the installed jdk rootdirectory;
-7. set system variable "ANDROID_HOME" to the installed android sdk root directory;
+5. install java development kit (JDK) 8 or later, 64bit version;
+6. install android studio 3.0.1 and android sdk using android studio's sdk manager;
+7. set system variable "JAVA_HOME" to the installed jdk rootdirectory;
+8. set system variable "ANDROID_HOME" to the installed android sdk root directory;
 
 for ios on mac:
-4. install the latest xcode;
-5. login developer account in xcode;
-6. enable xcode-select command-line
+5. install the latest xcode;
+6. login developer account in xcode;
+7. enable xcode-select command-line
    xcode-select --install
-7. install ios-deploy
+8. install ios-deploy
    $> sudo npm install -g --unsafe-perm=true --allow-root ios-deploy
-8. install CocoaPods
+9. install CocoaPods
    $> sudo gem install cocoapods
    $> pod setup
 
@@ -26,10 +27,12 @@ build:
 for android:
 1. clone and checkout the MWMobileController.git;
 2. run build_android.bat in the git root directory;
-3. the build out apk will be in release_pkgs;
+3. if network error, try again;
+4. the build out apk will be in release_pkgs;
 
 for ios:
 1. clone and checkout the MWMobileController.git;
 2. run build_ios.sh in the git root directory;
-3. the build out app will be in release_pkgs;
+3. if network error, try again;
+4. the build out app will be in release_pkgs;
 

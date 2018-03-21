@@ -1,8 +1,12 @@
 @echo off
 
+echo install npm dependencies...
+call npm install
+
 echo adding platform android..., if firstly build, will take a long time
 call ionic cordova platform remove android
-call ionic cordova platform add android
+call ionic cordova resources android
+call ionic cordova platform add android --no-resources
 
 if /i "%1" == "--debug" (
     if exist release_pkgs\MaxWallController-Debug.apk (
