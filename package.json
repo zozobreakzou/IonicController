@@ -54,5 +54,8 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-fullscreen": {}
     }
+  },
+  "config": {
+    "ionic_purge_unused_fonts": false
   }
 }
