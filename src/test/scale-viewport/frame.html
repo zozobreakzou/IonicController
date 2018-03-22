@@ -1,0 +1,24 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="frame.css">
+</head>
+<body>
+    <script type="text/javascript">
+        window.onmessage = function() {
+            document.body.innerHTML =
+            '<div class="container">\
+            <button id="zoomout">zoom out</button> <button id="zoomin">zoom in</button>\
+            <div class="small"></div>\
+            <div class="large"></div>\
+            </div>';
+        };
+        window.onload = function(){
+            parent.postMessage({uid: 1, method: "setViewport", params: [window.screen.width/1920]}, "*");
+        };
+    </script>
+</body>
+
+</html>
+
+

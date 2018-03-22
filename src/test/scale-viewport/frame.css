@@ -1,0 +1,27 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+.container {
+    width: 1920px;
+    height: 300px;
+}
+
+button {
+    margin: auto;
+}
+
+.large {
+	background-color: blue;
+	width: 1920px;
+	height: 100px;
+    margin: auto;
+}
+
+.small {
+	background-color: red;
+	width: 600px;
+	height: 100px;
+    margin: auto;
+}
