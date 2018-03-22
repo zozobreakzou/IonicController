@@ -52,7 +52,8 @@
       "cordova-plugin-network-information": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-fullscreen": {}
+      "cordova-plugin-fullscreen": {},
+      "cordova-plugin-viewport": {}
     }
   },
   "config": {

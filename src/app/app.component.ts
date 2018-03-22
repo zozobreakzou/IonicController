@@ -87,7 +87,26 @@ export class MyApp {
       this.network.onDisconnect().subscribe( () => {
         console.info('network was disconnected :-(');
       } );
+
+      window.onmessage = ( event: MessageEvent) : any => {
+        try {
+          var ret = this[event.data.method].apply(this, event.data.params);
+          var response = {
+              uid: event.data.uid,
+              method: event.data.method,
+              result: ret
+          };
+          event.source.postMessage(response, event.source.location.origin);
+        } catch(e) {
+            event.source.postMessage(e, event.source.location.origin);
+        }
+      }
     });
+  }
+
+  setViewport(scale: number) {
+    let viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'width=device-width, minimum-scale=0.1, maximum-scale=10.0, user-scalable=0'+", initial-scale="+scale);
   }
 
   private backButtonPressed : boolean = false;

@@ -84,7 +84,9 @@ export class ControllerPage {
     }).present();
   }
   ionViewDidLeave() {
-    console.log('ionViewWillLeave ControllerPage');
+    console.log('ionViewDidLeave ControllerPage');
+    var viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0, user-scalable=0');
   }
 
   onFrameLoad($event) {

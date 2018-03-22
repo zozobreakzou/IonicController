@@ -46,4 +46,5 @@
     <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
     <plugin name="cordova-plugin-fullscreen" spec="^1.2.0" />
+    <plugin name="cordova-plugin-viewport" spec="~1.0.3" />
 </widget>
