@@ -11,6 +11,7 @@ import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuIte
 import { ControllerPage } from "../controller/controller"
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 import { LoginServerInfo } from "../../providers/login-manager/login-manager";
+import { Platform } from 'ionic-angular/platform/platform';
 
 /**
  * Generated class for the ServerTreePage page.
@@ -26,6 +27,7 @@ import { LoginServerInfo } from "../../providers/login-manager/login-manager";
 export class ServerTreePage {
 
   constructor(
+      public platform: Platform,
       public navCtrl: NavController,
       public navParams: NavParams,
       private alertCtrl: AlertController,
@@ -132,19 +134,27 @@ export class ServerTreePage {
   }
 
   private onRefresh(refresher: Refresher) {
+    let unRegister = this.platform.registerBackButtonAction(() => {
+      this.mwConnection.logout(3001, "canceled by user");
+    }, 2);
+
     this.mwConnection
     .login("wss://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
     .then((response) => {
       console.log("login success.");
       return this.fetchChildTree();
     })
-    .then(() => { 
+    .then(() => {
       refresher.complete();
       this.mwConnection.logout(1000, "normal close");
+
+      unRegister();
     })
     .catch(() => {
       refresher.complete();
       this.mwConnection.logout(3011, "server internal error");
+
+      unRegister();
     });
   }
 

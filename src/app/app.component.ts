@@ -63,7 +63,7 @@ export class MyApp {
 
       this.platform.registerBackButtonAction(() => {
         try {
-          this.getTopMostPortal().dismiss(null, "canceled by user");
+          this.getActivePortal().dismiss(null, "canceled by user");
         } catch (error) {
           if ( this.nav.canGoBack() ) {
             this.nav.pop();
@@ -105,15 +105,14 @@ export class MyApp {
     });
   }
 
-  getTopMostPortal() : ViewController {
+  getActivePortal() : ViewController {
     let topmost: ViewController = null;
     let maxZIndex: number = -9999999;
 
     [
       this.ionicApp._loadingPortal.getActive(),
-      this.ionicApp._modalPortal.getActive()  ,
-      this.ionicApp._overlayPortal.getActive(),
-      this.ionicApp._toastPortal.getActive()  
+      this.ionicApp._modalPortal.getActive(),
+      this.ionicApp._overlayPortal.getActive()
     ].forEach((v, i, a) => {
       if ( v &&  maxZIndex < v.getZIndex()  ) {
         maxZIndex = v.getZIndex();
