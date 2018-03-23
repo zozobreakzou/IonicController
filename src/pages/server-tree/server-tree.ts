@@ -40,11 +40,11 @@ export class ServerTreePage {
 
     let loginServerInfo = {
       info: {
-        name: this.loginServer.name,
-        ip:   this.loginServer.address,
-        port: this.loginServer.port,
-        username: this.loginServer.username,
-        password: this.loginServer.password
+        name:        this.loginServer.name,
+        ip:          this.loginServer.address,
+        no_ssl_port: this.loginServer.port,
+        username:    this.loginServer.username,
+        password:    this.loginServer.password
       }
     };
 
@@ -112,7 +112,7 @@ export class ServerTreePage {
             navTransition.then(() => {
               let server_info = e.node.node.serverInfo.info;
               let target_url: string = "http://" + server_info.ip + ":38080/H5DsgFiles/DesignerWebsite/pageviewer.html"
-                                     + "?maxwallip="+server_info.ip + "&maxwallport="+server_info.port + "&user="+server_info.username + "&pwd="+server_info.password;
+                                     + "?maxwallip="+server_info.ip + "&maxwallport="+server_info.no_ssl_port + "&user="+server_info.username + "&pwd="+server_info.password;
 
               this.navCtrl.push(ControllerPage, {controller_url: target_url});
             });
