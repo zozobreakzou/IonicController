@@ -51,7 +51,7 @@ export class LoginFormPage {
 
     loading.onDidDismiss((data: any, role: string) => {
       if ( role == "canceled by user" ) {
-        this.mwConnection.logout();
+        this.mwConnection.logout(3001, "canceled by user");
       }
     });
 
@@ -70,7 +70,7 @@ export class LoginFormPage {
     })
     .catch((e) => {
       console.log(e);
-      this.mwConnection.logout();
+      this.mwConnection.logout(3011, "server internal error");
       loading.dismiss();
 
       let subTitle: string;
@@ -78,6 +78,9 @@ export class LoginFormPage {
         subTitle = e.type;
       } else if ( e instanceof Error ) {
         subTitle = e.message;
+        if ( e.message == "canceled by user" ) {
+          return;
+        }
       } else {
         subTitle = e.toString();
       }
