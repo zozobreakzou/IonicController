@@ -13,6 +13,7 @@ import { Network } from '@ionic-native/network';
 import { LoginFormPage } from '../pages/login-form/login-form';
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 @Component({
   templateUrl: 'app.html'
@@ -62,24 +63,24 @@ export class MyApp {
 
       this.platform.registerBackButtonAction(() => {
         try {
-          this.ionicApp._getActivePortal().getActive().dismiss();
+          this.getActivePortal().dismiss(null, "canceled by user");
         } catch (error) {
           if ( this.nav.canGoBack() ) {
             this.nav.pop();
           } else {
-              if (this.backButtonPressed) {
-                this.platform.exitApp();
-              } else {
-                this.toastCtrl.create({
-                  message: 'press again to exit',
-                  duration: 2000,
-                  position: 'top',
-                  dismissOnPageChange: true,
-                  cssClass: "mw-toast center",
-                }).present();
-                this.backButtonPressed = true;
-                setTimeout(() => { this.backButtonPressed = false }, 2000);
-              }
+            if (this.backButtonPressed) {
+              this.platform.exitApp();
+            } else {
+              this.toastCtrl.create({
+                message: 'press again to exit',
+                duration: 2000,
+                position: 'top',
+                dismissOnPageChange: true,
+                cssClass: "mw-toast center",
+              }).present();
+              this.backButtonPressed = true;
+              setTimeout(() => { this.backButtonPressed = false }, 2000);
+            }
           }
         }
       }, 1);
@@ -102,6 +103,24 @@ export class MyApp {
         }
       }
     });
+  }
+
+  getActivePortal() : ViewController {
+    let topmost: ViewController = null;
+    let maxZIndex: number = -9999999;
+
+    [
+      this.ionicApp._loadingPortal.getActive(),
+      this.ionicApp._modalPortal.getActive(),
+      this.ionicApp._overlayPortal.getActive()
+    ].forEach((v, i, a) => {
+      if ( v &&  maxZIndex < v.getZIndex()  ) {
+        maxZIndex = v.getZIndex();
+        topmost = v;
+      }
+    });
+
+    return topmost;
   }
 
   setViewport(scale: number) {

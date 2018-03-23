@@ -49,6 +49,12 @@ export class LoginFormPage {
     let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     loading.present();
 
+    loading.onDidDismiss((data: any, role: string) => {
+      if ( role == "canceled by user" ) {
+        this.mwConnection.logout();
+      }
+    });
+
     this.mwConnection
     .login("ws://"+this.loginManager.currentLoginServer.address+":"+this.loginManager.currentLoginServer.port, this.username, this.password)
     .then((response) => {
@@ -68,7 +74,7 @@ export class LoginFormPage {
       loading.dismiss();
 
       let subTitle: string;
-      if ( e instanceof(Event) ) {
+      if ( e instanceof Event ) {
         subTitle = e.type;
       } else if ( e instanceof Error ) {
         subTitle = e.message;

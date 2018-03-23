@@ -75,7 +75,7 @@ class MwConnection {
   
       this.ws.onerror = (e: Event) => {
         console.log("ws error.");
-        if ( this.ws.readyState == WebSocket.CLOSED || this.ws.readyState == WebSocket.CONNECTING ) {
+        if (this.ws && (this.ws.readyState == WebSocket.CLOSED || this.ws.readyState == WebSocket.CONNECTING) ) {
           reject(e);
         }
         this.close();
