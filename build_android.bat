@@ -5,8 +5,7 @@ call npm install
 
 echo adding platform android..., if firstly build, will take a long time
 call ionic cordova platform remove android
-call ionic cordova resources android
-call ionic cordova platform add android --no-resources
+call ionic cordova platform add android
 
 if /i "%1" == "--debug" (
     if exist release_pkgs\MaxWallController-Debug.apk (
