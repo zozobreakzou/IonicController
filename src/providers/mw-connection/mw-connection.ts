@@ -28,6 +28,8 @@ class MwConnection {
     }
 
     return new Promise((resolve, reject) => {
+      this.rejectOpen = reject;
+
       this.uid = 0;
       this.ws = new WebSocket(address);
   
@@ -57,6 +59,7 @@ class MwConnection {
       this.ws.onopen = (e: Event) => {
         console.log("ws opend.");
         resolve(e);
+        this.rejectOpen = null;
       };
   
       this.ws.onclose = (e: Event) => {
@@ -75,17 +78,28 @@ class MwConnection {
   
       this.ws.onerror = (e: Event) => {
         console.log("ws error.");
-        if ( this.ws.readyState == WebSocket.CLOSED || this.ws.readyState == WebSocket.CONNECTING ) {
+        if (this.ws && (this.ws.readyState == WebSocket.CLOSED || this.ws.readyState == WebSocket.CONNECTING) ) {
           reject(e);
+          this.rejectOpen = null;
         }
-        this.close();
+        this.close(1002, e.type);
       };
     });
   }
 
-  close() {
+  close(code: number, reason: string) {
     if (this.ws && (this.ws.readyState == WebSocket.OPEN || this.ws.readyState == WebSocket.CONNECTING)) {
-      this.ws.close();
+      if ( this.rejectOpen ) {
+        this.rejectOpen(new Error(reason));
+        this.rejectOpen = null;
+      }
+
+      this.pendingRequests.forEach((r: RequestInfo) => {
+        clearTimeout(r.timeout);
+        r.reject(new Error(reason));
+      });
+      this.pendingRequests.clear();
+      this.ws.close(code, reason);
     }
     this.ws = undefined;
   }
@@ -144,6 +158,8 @@ class MwConnection {
 
   private ws:       WebSocket;
 
+  private rejectOpen;
+
   private uid:      number;
   private timeout:  number  = 10000; // 10 seconds
   private pendingRequests : Map<number, RequestInfo> = new Map<number, RequestInfo>();
@@ -175,8 +191,8 @@ export class MwConnectionProvider {
     });
   }
 
-  logout() {
-    this.connection.close();
+  logout(code: number, reason: string) {
+    this.connection.close(code, reason);
   }
 
   getServerTree() : Promise<any> {
