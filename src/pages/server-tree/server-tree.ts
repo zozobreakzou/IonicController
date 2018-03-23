@@ -69,13 +69,20 @@ export class ServerTreePage {
     let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     loading.present();
 
+    loading.onDidDismiss((data: any, role: string) => {
+      if ( role == "canceled by user" ) {
+        this.mwConnection.logout(3001, "canceled by user");
+      }
+    });
+
     this.fetchChildTree()
     .then( () => {
       loading.dismiss();
-      this.mwConnection.logout();
+      this.mwConnection.logout(1000, "normal close");
     })
     .catch( () => {
-      this.mwConnection.logout();
+      loading.dismiss();
+      this.mwConnection.logout(3011, "server internal error");
     });
   }
 
@@ -133,11 +140,11 @@ export class ServerTreePage {
     })
     .then(() => { 
       refresher.complete();
-      this.mwConnection.logout();
+      this.mwConnection.logout(1000, "normal close");
     })
     .catch(() => {
       refresher.complete();
-      this.mwConnection.logout();
+      this.mwConnection.logout(3011, "server internal error");
     });
   }
 

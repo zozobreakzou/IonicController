@@ -36,6 +36,13 @@ export class ControllerPage {
     this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     this.loading.present();
 
+    this.loading.onDidDismiss((data: any, role: string) => {
+      if ( role == "canceled by user" ) {
+        this.navCtrl.pop();
+      }
+      this.loading = null;
+    });
+
     let Hammer = (<any>window).Hammer;
     let container = document.getElementById("frame_container");
     let hm = new Hammer.Manager(container, {
