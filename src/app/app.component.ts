@@ -109,5 +109,11 @@ export class MyApp {
     viewport.setAttribute('content', 'width=device-width, minimum-scale=0.1, maximum-scale=10.0, user-scalable=0'+", initial-scale="+scale);
   }
 
+  goBack() {
+    if ( this.nav.canGoBack() ) {
+      this.nav.pop();
+    }
+  }
+
   private backButtonPressed : boolean = false;
 }
