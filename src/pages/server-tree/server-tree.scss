@@ -25,6 +25,11 @@ page-server-tree {
     tree-internal .tree .folding.node-leaf:before {
         color: color($colors, primary);
     }
+
+    tree-internal .tree .node-value:after {
+        height: 1px;
+        background-color: $list-border-color;
+    }
 }
 
 .action-sheet-group-overflow-auto {
