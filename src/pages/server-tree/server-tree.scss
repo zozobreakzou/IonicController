@@ -5,6 +5,10 @@ page-server-tree {
     //     border-top: 0px;
     // }
 
+    tree-internal {
+        font-size: 1.8rem;
+    }
+
     tree-internal .tree .node-value {
         display: inline-block;
         color: $text-color;
