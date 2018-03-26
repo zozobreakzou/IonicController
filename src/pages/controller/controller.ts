@@ -27,11 +27,13 @@ export class ControllerPage {
       private loadingCtrl: LoadingController,
       public toastCtrl: ToastController) {
 
-    this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(navParams.data.controller_url);
+    this.loadURL = navParams.data.controller_url;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ControllerPage');
+
+    this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.loadURL);
 
     this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     this.loading.present();
@@ -44,8 +46,7 @@ export class ControllerPage {
     });
 
     let Hammer = (<any>window).Hammer;
-    let container = document.getElementById("frame_container");
-    let hm = new Hammer.Manager(container, {
+    let hm = new Hammer.Manager(document.body, {
       recognizers: [
         [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
       ]
@@ -69,22 +70,6 @@ export class ControllerPage {
   }
   ionViewDidEnter() {
     console.log('ionViewDidEnter ControllerPage');
-    let f = <HTMLIFrameElement>document.getElementById("present_frame");
-    if ( f && f.contentWindow ) {
-      let event_types = [
-        "click", "dblclick", "mousedown", "mouseup", "mousemove",
-        "pointerdown", "pointerup", "pointermove",, "pointercancel",
-        "touchstart", "touchend", "touchmove", "touchcancel"
-      ];
-
-      for (let  e of event_types ) {
-        f.contentWindow.removeEventListener(e, this.relayEventListener);
-      }
-      this.relayEventListener = this.relayEvent.bind(this, document.getElementById("frame_container"));
-      for (let  e of event_types ) {
-        f.contentWindow.addEventListener(e, this.relayEventListener);
-      }
-    }
 
     this.toastCtrl.create({
       message: 'swipe right with two finger to go back',
@@ -102,9 +87,29 @@ export class ControllerPage {
 
   onFrameLoad($event) {
     console.log("onFrameLoad ControllerPage");
-    if ( this.loading ) {
-      this.loading.dismiss();
-      this.loading = null;
+
+    if ( this.controller_url ) {
+      let f = <HTMLIFrameElement>document.getElementById("present_frame");
+      if ( f && f.contentWindow ) {
+        let event_types = [
+          "click", "dblclick", "mousedown", "mouseup", "mousemove",
+          "pointerdown", "pointerup", "pointermove",, "pointercancel",
+          "touchstart", "touchend", "touchmove", "touchcancel"
+        ];
+
+        for (let  e of event_types ) {
+          f.contentWindow.removeEventListener(e, this.relayEventListener);
+        }
+        this.relayEventListener = this.relayEvent.bind(this, document.body);
+        for (let  e of event_types ) {
+          f.contentWindow.addEventListener(e, this.relayEventListener);
+        }
+      }
+
+      if ( this.loading ) {
+        this.loading.dismiss();
+        this.loading = null;
+      }
     }
   }
 
@@ -140,4 +145,5 @@ export class ControllerPage {
   private controller_url: SafeResourceUrl;
   private relayEventListener;
   private loading: Loading;
+  private loadURL: string;
 }
