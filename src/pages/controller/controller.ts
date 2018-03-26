@@ -54,7 +54,11 @@ export class ControllerPage {
     hm.on("panright", ()=>{
       console.log("two pointer pan right.");
       hm.destroy();
-      this.navCtrl.pop();
+      if ( this.loading ) {
+        this.loading.dismiss(null, "canceled by user");
+      } else {
+        this.navCtrl.pop();
+      }
     });
   }
   ionViewWillUnload() {
