@@ -5,6 +5,10 @@ page-server-tree {
     //     border-top: 0px;
     // }
 
+    ion-content.content {
+        background-color: transparent;
+    }
+
     tree-internal {
         font-size: 1.8rem;
     }
