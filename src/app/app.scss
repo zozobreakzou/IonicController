@@ -51,6 +51,6 @@ ion-content {
     background-attachment: scroll;
 }
 
-ion-navbar {
-    background-color: $background-color;
+ion-navbar .toolbar-background {
+    background: linear-gradient(#787878, $background-color, #787878);
 }
