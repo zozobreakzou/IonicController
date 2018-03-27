@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 
 import { LoginManagerProvider, LoginServerInfo } from '../../providers/login-manager/login-manager';
 import { EditLoginServerPage } from '../edit-login-server/edit-login-server';
@@ -22,6 +22,7 @@ import { DomDebouncer, DomController } from 'ionic-angular/platform/dom-controll
 export class LoginManagerPage {
 
   constructor(
+      public platform: Platform,
       public navCtrl: NavController,
       public navParams: NavParams,
       public domCtrl: DomController,
@@ -55,24 +56,39 @@ export class LoginManagerPage {
   onOpenSlideItem(event, ionList, slidingItem : ItemSliding, item : Item) {
     event.preventDefault();
 
-    let down, move1, move2, move3, move4, up;
+    let touch_offsets: number[] = [0, 5, 15, 35, 80, 80];
+    let touch_events  = [null, null, null, null, null, null];
     let ele = item._elementRef.nativeElement;
 
     if ( this.support_touchevent ) {
       try {
-        let touchStart : Touch = document.createTouch(window, ele, 1, event.pageX,    event.pageY, event.screenX,     event.screenY);
-        let touchMove1 : Touch = document.createTouch(window, ele, 1, event.pageX-5,  event.pageY, event.screenX-5,   event.screenY);
-        let touchMove2 : Touch = document.createTouch(window, ele, 1, event.pageX-15, event.pageY, event.screenX-15,  event.screenY);
-        let touchMove3 : Touch = document.createTouch(window, ele, 1, event.pageX-35, event.pageY, event.screenX-35,  event.screenY);
-        let touchMove4 : Touch = document.createTouch(window, ele, 1, event.pageX-80, event.pageY, event.screenX-80,  event.screenY);
-        let touchEnd   : Touch = document.createTouch(window, ele, 1, event.pageX-80, event.pageY, event.screenX-80,  event.screenY);
+        let touches: Touch[] = [null, null, null, null, null, null];
+        let touch_types: string[] = ["touchstart", "touchmove", "touchmove", "touchmove", "touchmove", "touchend"];
 
-        down  = new TouchEvent("touchstart", { bubbles:true, changedTouches: [touchStart], touches: [touchStart], targetTouches: [touchStart]});
-        move1 = new TouchEvent("touchmove",  { bubbles:true, changedTouches: [touchMove1], touches: [touchMove1], targetTouches: [touchMove1]});
-        move2 = new TouchEvent("touchmove",  { bubbles:true, changedTouches: [touchMove2], touches: [touchMove2], targetTouches: [touchMove2]});
-        move3 = new TouchEvent("touchmove",  { bubbles:true, changedTouches: [touchMove3], touches: [touchMove3], targetTouches: [touchMove3]});
-        move4 = new TouchEvent("touchmove",  { bubbles:true, changedTouches: [touchMove4], touches: [touchMove4], targetTouches: [touchMove4]});
-        up    = new TouchEvent("touchend",   { bubbles:true, changedTouches: [touchEnd],   touches: [touchEnd],   targetTouches: [touchEnd]});
+        touch_offsets.every((v, i, a) => {
+          touches[i] = document.createTouch(window, ele, 1, event.pageX-v, event.pageY, event.screenX-v, event.screenY);
+          return true;
+        });
+
+        if ( this.platform.is("ios") ) {
+          touch_offsets.every((v, i, a) => {
+            let touch_event = touch_events[i] = document.createEvent("TouchEvent") as any;
+            touch_event.initTouchEvent(
+              touch_types[i], true, true, ele, 1,
+              event.screenX-v, event.screenY, event.clientX-v, event.clientY,
+              false, false, false, false,
+              document.createTouchList(touches[i]),
+              document.createTouchList(touches[i]),
+              document.createTouchList(touches[i]),
+              1.0, 0.0);
+            return true;
+          });
+        } else {
+          touch_offsets.every((v, i, a) => {
+            touch_events[i] = new TouchEvent(touch_types[i], { bubbles:true, changedTouches: [touches[i]], touches: [touches[i]], targetTouches: [touches[i]]});
+            return true;
+          });
+        }
       } catch (error) {
         console.log(error);
         this.support_touchevent = false;
@@ -80,12 +96,11 @@ export class LoginManagerPage {
     }
 
     if ( !this.support_touchevent ) {
-      down  = new MouseEvent("mousedown", { bubbles:true, clientX: event.clientX,    clientY: event.clientY, screenX: event.screenX,    screenY: event.screenY });
-      move1 = new MouseEvent("mousemove", { bubbles:true, clientX: event.clientX-5,  clientY: event.clientY, screenX: event.screenX-5,  screenY: event.screenY });
-      move2 = new MouseEvent("mousemove", { bubbles:true, clientX: event.clientX-15, clientY: event.clientY, screenX: event.screenX-15, screenY: event.screenY });
-      move3 = new MouseEvent("mousemove", { bubbles:true, clientX: event.clientX-35, clientY: event.clientY, screenX: event.screenX-35, screenY: event.screenY });
-      move4 = new MouseEvent("mousemove", { bubbles:true, clientX: event.clientX-80, clientY: event.clientY, screenX: event.screenX-80, screenY: event.screenY });
-      up    = new MouseEvent("mouseup",   { bubbles:true, clientX: event.clientX-80, clientY: event.clientY, screenX: event.screenX-80, screenY: event.screenY });
+      let touch_types: string[] = ["mousedown", "mousemove", "mousemove", "mousemove", "mousemove", "mouseup"];
+      touch_offsets.every((v, i, a) => {
+        touch_events[i] = new MouseEvent(touch_types[i], { bubbles:true, clientX: event.clientX-v, clientY: event.clientY, screenX: event.screenX-v, screenY: event.screenY });
+        return true;
+      });
     }
 
     let differRun = (fn) : Promise<any> => {
@@ -97,12 +112,9 @@ export class LoginManagerPage {
     }
 
     async function emulateSwipe() {
-      await differRun( ele.dispatchEvent.bind(ele, down));
-      await differRun( ele.dispatchEvent.bind(ele, move1));
-      await differRun( ele.dispatchEvent.bind(ele, move2));
-      await differRun( ele.dispatchEvent.bind(ele, move3));
-      await differRun( ele.dispatchEvent.bind(ele, move4));
-      await differRun( ele.dispatchEvent.bind(ele, up));
+      for ( let i=0; i<touch_events.length; ++i ) {
+        await differRun(ele.dispatchEvent.bind(ele, touch_events[i]));
+      }
     }
 
     emulateSwipe();
