@@ -33,7 +33,7 @@ export class ControllerPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ControllerPage');
 
-    this.controller_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.loadURL);
+    this.controllerURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.loadURL);
 
     this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
     this.loading.present();
@@ -88,7 +88,7 @@ export class ControllerPage {
   onFrameLoad($event) {
     console.log("onFrameLoad ControllerPage");
 
-    if ( this.controller_url ) {
+    if ( this.controllerURL ) {
       let f = <HTMLIFrameElement>document.getElementById("present_frame");
       if ( f && f.contentWindow ) {
         let event_types = [
@@ -142,7 +142,7 @@ export class ControllerPage {
       }
     }
   }
-  private controller_url: SafeResourceUrl;
+  private controllerURL: SafeResourceUrl;
   private relayEventListener;
   private loading: Loading;
   private loadURL: string;
