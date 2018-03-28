@@ -22,18 +22,17 @@ class MwConnection {
   }
 
   open(address: string, onClose?) : Promise<any> {
+    console.log("ws open: "+address);
     assert(!this.ws || this.ws.readyState==WebSocket.CLOSED, "ws should be null or closed");
     if ( this.ws && this.ws.readyState!=WebSocket.CLOSED ) {
       return Promise.reject(new Event("logined or logining"));
     }
 
     return new Promise((resolve, reject) => {
-      this.rejectOpen = reject;
-
       this.uid = 0;
       this.ws = new WebSocket(address);
   
-      /* 
+      /*
       {
         "category" : 0,
         "errorCode" : 0,
@@ -59,49 +58,45 @@ class MwConnection {
       this.ws.onopen = (e: Event) => {
         console.log("ws opend.");
         resolve(e);
-        this.rejectOpen = null;
       };
   
-      this.ws.onclose = (e: Event) => {
+      this.ws.onclose = (e: CloseEvent) => {
         console.log("ws closed.");
+
+        if ( this.closeCode || this.closeReason ) {
+          e = new CloseEvent("close", { code: this.closeCode, reason: this.closeReason });
+          this.closeCode = undefined;
+          this.closeReason = undefined;
+        }
+
+        reject(e);
 
         this.pendingRequests.forEach((r: RequestInfo) => {
           clearTimeout(r.timeout);
           r.reject(e);
         })
         this.pendingRequests.clear();
-        this.ws = undefined;
+
         if ( onClose ) {
           onClose(e);
         }
+
+        this.ws = undefined;
       };
   
       this.ws.onerror = (e: Event) => {
         console.log("ws error.");
-        if (this.ws && (this.ws.readyState == WebSocket.CLOSED || this.ws.readyState == WebSocket.CONNECTING) ) {
-          reject(e);
-          this.rejectOpen = null;
-        }
-        this.close(1002, e.type);
       };
     });
   }
 
   close(code: number, reason: string) {
     if (this.ws && (this.ws.readyState == WebSocket.OPEN || this.ws.readyState == WebSocket.CONNECTING)) {
-      if ( this.rejectOpen ) {
-        this.rejectOpen(new Error(reason));
-        this.rejectOpen = null;
-      }
-
-      this.pendingRequests.forEach((r: RequestInfo) => {
-        clearTimeout(r.timeout);
-        r.reject(new Error(reason));
-      });
-      this.pendingRequests.clear();
+      console.log("ws close: "+reason);
+      this.closeCode = code;
+      this.closeReason = reason;
       this.ws.close(code, reason);
     }
-    this.ws = undefined;
   }
 
   send(type: string, body: object, timeout?: number) : Promise<any> {
@@ -156,9 +151,9 @@ class MwConnection {
     }
   }
 
-  private ws:       WebSocket;
-
-  private rejectOpen;
+  private ws:           WebSocket;
+  private closeCode:    number;
+  private closeReason:  string;
 
   private uid:      number;
   private timeout:  number  = 10000; // 10 seconds

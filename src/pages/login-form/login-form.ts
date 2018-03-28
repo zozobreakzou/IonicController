@@ -74,15 +74,18 @@ export class LoginFormPage {
       loading.dismiss();
 
       let subTitle: string;
-      if ( e instanceof Event ) {
+      if ( e instanceof CloseEvent ) {
+        subTitle = e.reason;
+      } else if ( e instanceof Event ) {
         subTitle = e.type;
       } else if ( e instanceof Error ) {
         subTitle = e.message;
-        if ( e.message == "canceled by user" ) {
-          return;
-        }
       } else {
         subTitle = e.toString();
+      }
+
+      if ( subTitle == "canceled by user" ) {
+        return;
       }
 
       let alert = this.alertCtrl.create({
