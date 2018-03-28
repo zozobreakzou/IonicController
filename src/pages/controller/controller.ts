@@ -142,8 +142,15 @@ export class ControllerPage {
       }
     }
   }
+
+  public hideNavbar(hide: boolean) {
+    this._hideNavbar = hide;
+  }
+
   private controllerURL: SafeResourceUrl;
   private relayEventListener;
   private loading: Loading;
   private loadURL: string;
+  
+  private _hideNavbar: boolean = false;
 }

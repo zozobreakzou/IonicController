@@ -4,5 +4,10 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<ion-header>
+  <ion-navbar [hidden]="_hideNavbar">
+    <ion-title>Controller</ion-title>
+  </ion-navbar>
+</ion-header>
 
 <iframe class="fullscreen" id="present_frame" [src]="controllerURL" (load)="onFrameLoad($event)" frameborder="0"></iframe>

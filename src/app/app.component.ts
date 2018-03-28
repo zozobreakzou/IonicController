@@ -14,6 +14,7 @@ import { LoginFormPage } from '../pages/login-form/login-form';
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { ControllerPage } from '../pages/controller/controller';
 
 @Component({
   templateUrl: 'app.html'
@@ -131,6 +132,13 @@ export class MyApp {
   goBack() {
     if ( this.nav.canGoBack() ) {
       this.nav.pop();
+    }
+  }
+
+  hideNavbar(hide: boolean) {
+    let activePage = this.nav.getActive().instance;
+    if( activePage instanceof ControllerPage) {
+      (<ControllerPage>activePage).hideNavbar(hide);
     }
   }
 
