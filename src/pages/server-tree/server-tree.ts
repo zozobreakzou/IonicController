@@ -183,11 +183,11 @@ export class ServerTreePage {
   }
 
   private fillTreeModelChild(child_array) : TreeModel[] {
+    let children : TreeModel[] = [];
     if ( !Array.isArray(child_array) || child_array.length == 0 ) {
-      return;
+      return children;
     }
 
-    let children : TreeModel[] = [];
     for ( let serverInfo of child_array ) {
       let childTreeModel : TreeModel = {
         id: this.treeId++,
