@@ -5,8 +5,8 @@
             "developmentTeam": "RN8YKV5B34",
             "packageType": "development",
             "buildFlag": [
-                "allowProvisioningUpdates=YES",
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+                "-allowProvisioningUpdates",
+                "EMBEDDED_CONTENT_CONTAINS_SWIFT=YES",
                 "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
                 "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
             ]
@@ -16,8 +16,8 @@
             "developmentTeam": "RN8YKV5B34",
             "packageType": "app-store",
             "buildFlag": [
-                "allowProvisioningUpdates=YES",
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+                "-allowProvisioningUpdates",
+                "EMBEDDED_CONTENT_CONTAINS_SWIFT=YES",
                 "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
                 "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
             ]
