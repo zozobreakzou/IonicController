@@ -5,6 +5,7 @@ import { LoadingController, Loading } from 'ionic-angular';
 
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { PageApiProvider } from '../../providers/page-api/page-api';
 
 /**
  * Generated class for the ControllerPage page.
@@ -25,7 +26,8 @@ export class ControllerPage {
       private sanitizer: DomSanitizer,
       private screenOrientation: ScreenOrientation,
       private loadingCtrl: LoadingController,
-      public toastCtrl: ToastController) {
+      private toastCtrl: ToastController,
+      private pageAPI: PageApiProvider) {
 
     this.loadURL = navParams.data.controller_url;
   }
@@ -81,8 +83,7 @@ export class ControllerPage {
   }
   ionViewDidLeave() {
     console.log('ionViewDidLeave ControllerPage');
-    var viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0, user-scalable=0');
+    this.pageAPI.setViewport(1.0);
   }
 
   onFrameLoad($event) {

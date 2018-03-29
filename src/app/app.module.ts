@@ -20,6 +20,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
 import { MwConnectionProvider } from '../providers/mw-connection/mw-connection';
+import { PageApiProvider } from '../providers/page-api/page-api';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { MwConnectionProvider } from '../providers/mw-connection/mw-connection';
     Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginManagerProvider,
-    MwConnectionProvider
+    MwConnectionProvider,
+    PageApiProvider
   ]
 })
 export class AppModule {}

@@ -12,6 +12,7 @@ import { Network } from '@ionic-native/network';
 
 import { LoginFormPage } from '../pages/login-form/login-form';
 import { LoginManagerProvider } from '../providers/login-manager/login-manager';
+import { PageApiProvider } from '../providers/page-api/page-api';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { ControllerPage } from '../pages/controller/controller';
@@ -36,7 +37,8 @@ export class MyApp {
       public toastCtrl: ToastController,
       public zeroConf: Zeroconf,
       public network: Network,
-      public loginManager: LoginManagerProvider) {
+      public loginManager: LoginManagerProvider,
+      public pageAPI: PageApiProvider) {
 
     this.initializeApp();
   }
@@ -92,7 +94,7 @@ export class MyApp {
 
       window.onmessage = ( event: MessageEvent) : any => {
         try {
-          var ret = this[event.data.method].apply(this, event.data.params);
+          var ret = this.pageAPI[event.data.method].apply(this.pageAPI, event.data.params);
           var response = {
               uid: event.data.uid,
               method: event.data.method,
@@ -122,24 +124,6 @@ export class MyApp {
     });
 
     return topmost;
-  }
-
-  setViewport(scale: number) {
-    let viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'width=device-width, minimum-scale=0.1, maximum-scale=10.0, user-scalable=0'+", initial-scale="+scale);
-  }
-
-  goBack() {
-    if ( this.nav.canGoBack() ) {
-      this.nav.pop();
-    }
-  }
-
-  hideNavbar(hide: boolean) {
-    let activePage = this.nav.getActive().instance;
-    if( activePage instanceof ControllerPage) {
-      (<ControllerPage>activePage).hideNavbar(hide);
-    }
   }
 
   private backButtonPressed : boolean = false;
