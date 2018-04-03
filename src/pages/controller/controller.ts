@@ -60,6 +60,11 @@ export class ControllerPage {
       hm.destroy();
       if ( !this._hasPopedNav ) {
         if ( this.loading ) {
+          let f = <HTMLIFrameElement>document.getElementById("present_frame");
+          if ( f && f.contentWindow ) {
+            f.contentWindow.stop();
+          }
+
           this.loading.dismiss(null, "canceled by user");
         } else {
           this.navCtrl.pop();
