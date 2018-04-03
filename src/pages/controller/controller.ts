@@ -63,28 +63,6 @@ export class ControllerPage {
     console.log("onFrameLoad ControllerPage");
 
     if ( this.controllerURL ) {
-      try {
-        let f = <HTMLIFrameElement>document.getElementById("present_frame");
-        if ( f && f.contentWindow ) {
-          let event_types = [
-            "click", "dblclick", "mousedown", "mouseup", "mousemove",
-            "pointerdown", "pointerup", "pointermove",, "pointercancel",
-            "touchstart", "touchend", "touchmove", "touchcancel"
-          ];
-  
-          for (let  e of event_types ) {
-            f.contentWindow.removeEventListener(e, this.relayEventListener);
-          }
-          this.relayEventListener = this.relayEvent.bind(this, document.body);
-          for (let  e of event_types ) {
-            f.contentWindow.addEventListener(e, this.relayEventListener);
-          }
-        }
-      } catch (error) {
-        console.log("setup iframe input event error.");
-        console.log(error);
-      }
-
       if ( this.loading ) {
         this.loading.dismiss();
         this.loading = null;
@@ -143,6 +121,30 @@ export class ControllerPage {
       if ( f && f.contentWindow ) { 
         f.contentWindow.removeEventListener(event.type, this.relayEventListener);
       }
+    }
+  }
+
+  setupFrameEvent() {
+    try {
+      let f = <HTMLIFrameElement>document.getElementById("present_frame");
+      if ( f && f.contentWindow ) {
+        let event_types = [
+          "click", "dblclick", "mousedown", "mouseup", "mousemove",
+          "pointerdown", "pointerup", "pointermove",, "pointercancel",
+          "touchstart", "touchend", "touchmove", "touchcancel"
+        ];
+
+        for (let  e of event_types ) {
+          f.contentWindow.removeEventListener(e, this.relayEventListener);
+        }
+        this.relayEventListener = this.relayEvent.bind(this, document.body);
+        for (let  e of event_types ) {
+          f.contentWindow.addEventListener(e, this.relayEventListener);
+        }
+      }
+    } catch (error) {
+      console.log("setup iframe input event error.");
+      console.log(error);
     }
   }
 
