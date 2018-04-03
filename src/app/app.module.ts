@@ -34,7 +34,7 @@ import { PageApiProvider } from '../providers/page-api/page-api';
   imports: [
     BrowserModule,
     TreeModule,
-    IonicModule.forRoot(MyApp, { 
+    IonicModule.forRoot(MyApp, {
       mode: 'ios',
       platforms: {
         ios: {
