@@ -3,7 +3,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
-import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { Refresher } from'ionic-angular';
 
 import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
@@ -33,7 +32,6 @@ export class ServerTreePage {
       private alertCtrl: AlertController,
       private loadingCtrl: LoadingController,
       private actionSheetCtrl: ActionSheetController,
-      private toastCtrl: ToastController,
       private mwConnection: MwConnectionProvider) {
 
     this.loginServer = this.navParams.data.loginServer;
@@ -90,14 +88,6 @@ export class ServerTreePage {
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter ServerTreePage');
-    
-    this.toastCtrl.create({
-      message: 'pull down to refresh',
-      duration: 2000,
-      position: 'top',
-      dismissOnPageChange: true,
-      cssClass: "mw-toast center",
-    }).present();
   }
 
   onItemSelected(e: NodeSelectedEvent) {
