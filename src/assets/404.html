@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>controller server page unavilable</title>
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
+  <meta name="theme-color" content="#4e8ef7">
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <link href="404.css" rel="stylesheet">
+</head>
+<body>
+    <div class="root_container">
+        <div class="center_container">
+            <h1>controller server page unavailable</h1>
+            <br>
+            <button id="btnGoback"><span>goback</span></button>
+        </div>
+    </div>
+    <script>
+        btnGoback.onclick = function(e) {
+            parent.postMessage({uid: 1, method: "goBack", params:[]}, "*");
+        }
+    </script>
+</body>
+</html>

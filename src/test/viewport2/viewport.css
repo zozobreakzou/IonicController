@@ -1,0 +1,19 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+.fullscreen_frame {
+    width: 100%;
+    min-width: 100%;
+    height: 200px;
+    margin: 0;
+    border: none;
+}
+
+.compare {
+    background-color: black;
+    width: 600px;
+    height: 100px;
+    margin: auto;
+}

@@ -41,8 +41,9 @@ export class ControllerPage {
     this.loading.present();
 
     this.loading.onDidDismiss((data: any, role: string) => {
-      if ( role == "canceled by user" ) {
+      if ( role == "canceled by user" && !this._hasPopedNav ) {
         this.navCtrl.pop();
+        this._hasPopedNav = true;
       }
       this.loading = null;
     });
@@ -57,10 +58,13 @@ export class ControllerPage {
     hm.on("panright", ()=>{
       console.log("two pointer pan right.");
       hm.destroy();
-      if ( this.loading ) {
-        this.loading.dismiss(null, "canceled by user");
-      } else {
-        this.navCtrl.pop();
+      if ( !this._hasPopedNav ) {
+        if ( this.loading ) {
+          this.loading.dismiss(null, "canceled by user");
+        } else {
+          this.navCtrl.pop();
+          this._hasPopedNav = true;
+        }
       }
     });
   }
@@ -154,4 +158,5 @@ export class ControllerPage {
   private loadURL: string;
   
   private _hideNavbar: boolean = false;
+  private _hasPopedNav: boolean = false;
 }
