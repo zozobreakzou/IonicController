@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { LoadingController, Loading } from 'ionic-angular';
 
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
@@ -26,7 +25,6 @@ export class ControllerPage {
       private sanitizer: DomSanitizer,
       private screenOrientation: ScreenOrientation,
       private loadingCtrl: LoadingController,
-      private toastCtrl: ToastController,
       private pageAPI: PageApiProvider) {
 
     this.loadURL = navParams.data.controller_url;
@@ -41,36 +39,10 @@ export class ControllerPage {
     this.loading.present();
 
     this.loading.onDidDismiss((data: any, role: string) => {
-      if ( role == "canceled by user" && !this._hasPopedNav ) {
+      if ( role == "canceled by user" ) {
         this.navCtrl.pop();
-        this._hasPopedNav = true;
       }
       this.loading = null;
-    });
-
-    let Hammer = (<any>window).Hammer;
-    let hm = new Hammer.Manager(document.body, {
-      recognizers: [
-        [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
-      ]
-    });
-
-    hm.on("panright", ()=>{
-      console.log("two pointer pan right.");
-      hm.destroy();
-      if ( !this._hasPopedNav ) {
-        if ( this.loading ) {
-          let f = <HTMLIFrameElement>document.getElementById("present_frame");
-          if ( f && f.contentWindow ) {
-            f.contentWindow.stop();
-          }
-
-          this.loading.dismiss(null, "canceled by user");
-        } else {
-          this.navCtrl.pop();
-          this._hasPopedNav = true;
-        }
-      }
     });
   }
   ionViewWillUnload() {
@@ -81,14 +53,6 @@ export class ControllerPage {
   }
   ionViewDidEnter() {
     console.log('ionViewDidEnter ControllerPage');
-
-    this.toastCtrl.create({
-      message: 'swipe right with two finger to go back',
-      duration: 2000,
-      position: 'top',
-      dismissOnPageChange: true,
-      cssClass: "mw-toast center",
-    }).present();
   }
   ionViewDidLeave() {
     console.log('ionViewDidLeave ControllerPage');
@@ -121,6 +85,30 @@ export class ControllerPage {
         this.loading = null;
       }
     }
+  }
+
+  setupSwipeGesture() {
+    let Hammer = (<any>window).Hammer;
+    let hm = new Hammer.Manager(document.body, {
+      recognizers: [
+        [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
+      ]
+    });
+
+    hm.on("panright", ()=>{
+      console.log("two pointer pan right.");
+      hm.destroy();
+      if ( this.loading ) {
+        let f = <HTMLIFrameElement>document.getElementById("present_frame");
+        if ( f && f.contentWindow ) {
+          f.contentWindow.stop();
+        }
+
+        this.loading.dismiss(null, "canceled by user");
+      } else {
+        this.navCtrl.pop();
+      }
+    });
   }
 
   relayEvent(target, event) {
@@ -163,5 +151,4 @@ export class ControllerPage {
   private loadURL: string;
   
   private _hideNavbar: boolean = false;
-  private _hasPopedNav: boolean = false;
 }
