@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { LoadingController, Loading } from 'ionic-angular';
 
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
@@ -20,6 +20,7 @@ import { PageApiProvider } from '../../providers/page-api/page-api';
 export class ControllerPage {
 
   constructor(
+      public platform: Platform,
       public navCtrl: NavController,
       public navParams: NavParams,
       private sanitizer: DomSanitizer,
@@ -135,8 +136,10 @@ export class ControllerPage {
   }
 
   public hideNavbar(hide: boolean) {
-    this._hideNavbar = hide;
-    console.log("hideNavbar "+hide);
+    this.platform.zone.run( () => {
+      this._hideNavbar = hide;
+      console.log("hideNavbar "+hide);
+    });
   }
 
   private controllerURL: SafeResourceUrl;
