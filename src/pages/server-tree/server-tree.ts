@@ -129,7 +129,7 @@ export class ServerTreePage {
     }, 2);
 
     this.mwConnection
-    .login("wss://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
+    .login("ws://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
     .then((response) => {
       console.log("login success.");
       return this.fetchChildTree();
