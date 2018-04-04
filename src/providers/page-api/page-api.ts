@@ -16,6 +16,10 @@ export class PageApiProvider {
     console.log('constructor PageApiProvider Provider');
   }
 
+  hello() {
+    console.log("received a hello message.");
+  }
+
   setViewport(scale: number) {
     console.log("setViewport scale to "+scale);
     let viewport = document.querySelector("meta[name=viewport]");
