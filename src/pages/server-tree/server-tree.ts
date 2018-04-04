@@ -11,6 +11,7 @@ import { ControllerPage } from "../controller/controller"
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
 import { LoginServerInfo } from "../../providers/login-manager/login-manager";
 import { Platform } from 'ionic-angular/platform/platform';
+import { PageApiProvider } from '../../providers/page-api/page-api';
 
 /**
  * Generated class for the ServerTreePage page.
@@ -32,7 +33,8 @@ export class ServerTreePage {
       private alertCtrl: AlertController,
       private loadingCtrl: LoadingController,
       private actionSheetCtrl: ActionSheetController,
-      private mwConnection: MwConnectionProvider) {
+      private mwConnection: MwConnectionProvider,
+      private pageAPI: PageApiProvider) {
 
     this.loginServer = this.navParams.data.loginServer;
 
@@ -67,7 +69,9 @@ export class ServerTreePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServerTreePage');
     let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
-    loading.present();
+    loading.present().then( () => {
+      this.pageAPI.setupCancelLoading(loading);
+    });
 
     loading.onDidDismiss((data: any, role: string) => {
       if ( role == "canceled by user" ) {

@@ -36,10 +36,16 @@ export class ControllerPage {
     this.controllerURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.loadURL);
 
     this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
-    this.loading.present();
+    this.loading.present().then( () => {
+      this.pageAPI.setupCancelLoading(this.loading);
+    });
 
     this.loading.onDidDismiss((data: any, role: string) => {
-      if ( role == "canceled by user" ) {
+      if (role == "canceled by user") {
+        let f = <HTMLIFrameElement>document.getElementById("present_frame");
+        if (f && f.contentWindow) {
+          f.contentWindow.stop();
+        }
         this.navCtrl.pop();
       }
       this.loading = null;
@@ -68,30 +74,6 @@ export class ControllerPage {
         this.loading = null;
       }
     }
-  }
-
-  setupSwipeGesture() {
-    let Hammer = (<any>window).Hammer;
-    let hm = new Hammer.Manager(document.body, {
-      recognizers: [
-        [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
-      ]
-    });
-
-    hm.on("panright", ()=>{
-      console.log("two pointer pan right.");
-      hm.destroy();
-      if ( this.loading ) {
-        let f = <HTMLIFrameElement>document.getElementById("present_frame");
-        if ( f && f.contentWindow ) {
-          f.contentWindow.stop();
-        }
-
-        this.loading.dismiss(null, "canceled by user");
-      } else {
-        this.navCtrl.pop();
-      }
-    });
   }
 
   relayEvent(target, event) {
