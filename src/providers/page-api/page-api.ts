@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { App } from 'ionic-angular/components/app/app';
 import { ControllerPage } from '../../pages/controller/controller';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 /*
   Generated class for the PageApiProvider provider.
@@ -41,5 +42,19 @@ export class PageApiProvider {
         (<ControllerPage>activePage).hideNavbar(hide);
       }
     }
+  }
+
+  setupCancelLoading(loading: Loading) {
+    let Hammer = (<any>window).Hammer;
+    let hm = new Hammer.Manager(loading.pageRef().nativeElement, {
+      recognizers: [
+        [Hammer.Pan, { event:"panright", direction:Hammer.DIRECTION_RIGHT, pointers: 2, threshold: 200 }]
+      ]
+    });
+
+    hm.on("panright", () => {
+      console.log("two finger pan right, cancel loading.");
+      loading.dismiss(null, "canceled by user");
+    });
   }
 }

@@ -8,6 +8,7 @@ import { ServerTreePage } from "../server-tree/server-tree";
 
 import { LoginManagerProvider, LoginServerInfo } from "../../providers/login-manager/login-manager";
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
+import { PageApiProvider } from '../../providers/page-api/page-api';
 
 /**
  * Generated class for the LoginFormPage page.
@@ -28,7 +29,8 @@ export class LoginFormPage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     public loginManager: LoginManagerProvider,
-    public mwConnection: MwConnectionProvider) {
+    public mwConnection: MwConnectionProvider,
+    public pageAPI: PageApiProvider) {
   }
 
   ionViewDidLoad() {
@@ -47,7 +49,9 @@ export class LoginFormPage {
 
   doLogin() {
     let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
-    loading.present();
+    loading.present().then(() => {
+      this.pageAPI.setupCancelLoading(loading);
+    });
 
     loading.onDidDismiss((data: any, role: string) => {
       if ( role == "canceled by user" ) {
