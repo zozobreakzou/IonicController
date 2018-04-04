@@ -94,15 +94,16 @@ export class MyApp {
 
       window.onmessage = ( event: MessageEvent) : any => {
         try {
+          console.log("onmessage: "+event.data.method);
           var ret = this.pageAPI[event.data.method].apply(this.pageAPI, event.data.params);
           var response = {
               uid: event.data.uid,
               method: event.data.method,
               result: ret
           };
-          event.source.postMessage(response, event.source.location.origin);
+          event.source.postMessage(response, event.origin);
         } catch(e) {
-            event.source.postMessage(e, event.source.location.origin);
+            event.source.postMessage(e, event.origin);
         }
       }
     });
