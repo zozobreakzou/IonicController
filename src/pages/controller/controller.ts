@@ -42,9 +42,13 @@ export class ControllerPage {
 
     this.loading.onDidDismiss((data: any, role: string) => {
       if (role == "canceled by user") {
-        let f = <HTMLIFrameElement>document.getElementById("present_frame");
-        if (f && f.contentWindow) {
-          f.contentWindow.stop();
+        try {
+          let f = <HTMLIFrameElement>document.getElementById("present_frame");
+          if (f && f.contentWindow && (f.contentWindow.stop instanceof Function)) {
+            f.contentWindow.stop();
+          }
+        } catch(e) {
+          console.log(e);
         }
         this.navCtrl.pop();
       }
@@ -132,6 +136,7 @@ export class ControllerPage {
 
   public hideNavbar(hide: boolean) {
     this._hideNavbar = hide;
+    console.log("hideNavbar "+hide);
   }
 
   private controllerURL: SafeResourceUrl;
