@@ -21,4 +21,7 @@ if /i "%1" == "--debug" (
     echo starting build release apk...
     call ionic cordova resources android
     call ionic cordova build android --prod --release --buildConfig build\android\build.json
+    echo upload the apk to pgyer.com
+    call "build\android\curl.exe" -k -F "buildInstallType=2" -F "buildPassword=zozobreak" -F "file=@release_pkgs\MaxWallController.apk" -F "_api_key=67c6157ed64f57b6fefea8914a0841df" https://www.pgyer.com/apiv2/app/upload
+    echo get and install the app from "https://www.pgyer.com/nxLm", password is "zozobreak"
 )
