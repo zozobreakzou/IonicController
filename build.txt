@@ -5,20 +5,23 @@
    $> npm install -g ionic cordova
 4. make sure the build machine can access internet for installing npm modules and generating resource;
 
-for android on windows:
+for android build on windows:
 5. install java development kit (JDK) 8 or later, 64bit version;
 6. install android studio 3.0.1 and android sdk using android studio's sdk manager;
 7. set system variable "JAVA_HOME" to the installed jdk rootdirectory;
 8. set system variable "ANDROID_HOME" to the installed android sdk root directory;
 
-for ios on mac:
+for ios build on mac:
 5. install the latest xcode;
-6. login developer account in xcode;
-7. enable xcode-select command-line
+6. login developer account with VIA ENTERPRISE TEAM ACCOUNT in xcode;
+7. login developer account with VIA COMPANY TEAM ACCOUNT in xcode;
+8. import the ENTERPRISE distribute certificate private KEY with "build/ios/EnterpriseCertificates_distribution.p12";
+9. import the APP-STORE distribute certificate private KEY;
+10.enable xcode-select command-line
    xcode-select --install
-8. install ios-deploy
+11.install ios-deploy
    $> sudo npm install -g --unsafe-perm=true --allow-root ios-deploy
-9. install CocoaPods
+12.install CocoaPods
    $> sudo gem install cocoapods
    $> pod setup
 
@@ -28,11 +31,17 @@ for android:
 1. clone and checkout the MWMobileController.git;
 2. run build_android.bat in the git root directory;
 3. if network error, try again;
-4. the build out apk will be in release_pkgs;
+4. the build output apk will be in release_pkgs and https://www.pgyer.com/nxLm;
 
-for ios:
+for ios enterprise distribution:
 1. clone and checkout the MWMobileController.git;
 2. run build_ios.sh in the git root directory;
 3. if network error, try again;
-4. the build out app will be in release_pkgs;
+4. the build output app will be in release_pkgs and https://www.pgyer.com/e2Lh;
+
+for ios app-store distribution:
+1. clone and checkout the MWMobileController.git;
+2. run build_ios.sh --app-store in the git root directory;
+3. if network error, try again;
+4. the build output app will be in release_pkgs;
 
