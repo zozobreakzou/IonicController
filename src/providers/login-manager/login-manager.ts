@@ -19,7 +19,7 @@ export class LoginServerInfo {
 
   storage structure: {
     currentLoginServer: "address",
-    remberAccount:      true,
+    rememberAccount:    true,
     loginServerList:    {},
   }
 */
@@ -34,15 +34,15 @@ export class LoginManagerProvider {
   public loadFromStorage() : Promise<any> {
     let currentLoginServer : string;
     return Promise.all([
-      this.storage.get("remberAccount")
+      this.storage.get("rememberAccount")
       .then( (v) => {
-        this._remberAccount = (v === undefined ? true : v);
+        this._rememberAccount = (v === undefined ? true : v);
 
-        console.log("storage get remberAccount resolved.");
+        console.log("storage get rememberAccount resolved.");
       })
       .catch( (v) => {
-        console.log("storage get remberAccount rejected.");
-        this._remberAccount = true;
+        console.log("storage get rememberAccount rejected.");
+        this._rememberAccount = true;
       }),
 
       this.storage.get("currentLoginServer")
@@ -88,8 +88,8 @@ export class LoginManagerProvider {
           autoDiscovered: false,
           filledByUser:   true,
 
-          username: this.remberAccount ? this.loginServerList[k].username : undefined,
-          password: this.remberAccount ? this.loginServerList[k].password : undefined
+          username: this.rememberAccount ? this.loginServerList[k].username : undefined,
+          password: this.rememberAccount ? this.loginServerList[k].password : undefined
         }
         this.loginServerList[k];
       }
@@ -211,16 +211,16 @@ export class LoginManagerProvider {
     this.storage.set("currentLoginServer", this.currentLoginServer ? this.currentLoginServer.address : null);
   }
 
-  get remberAccount() : boolean {
-    return this._remberAccount;
+  get rememberAccount() : boolean {
+    return this._rememberAccount;
   }
-  set remberAccount(v: boolean) {
-    this._remberAccount = v;
-    this.storage.set("remberAccount", this.remberAccount);
+  set rememberAccount(v: boolean) {
+    this._rememberAccount = v;
+    this.storage.set("rememberAccount", this.rememberAccount);
     this.saveServerListToStorage();
   }
 
   private _loginServerList = { };   // keyed by address
   private _currentLoginServer : LoginServerInfo;
-  private _remberAccount : boolean = true;
+  private _rememberAccount : boolean = true;
 }
