@@ -168,6 +168,13 @@ export class MwConnectionProvider {
   }
 
   login(address: string, username: string, password: string) : Promise<any> {
+    let login_error_description = {
+      0: "login success",
+      1: "username doesn't exists",
+      2: "password incorrect",
+      3: "already logined otherware"
+    };
+
     return this.connection
     .open(address, this.onClose.bind(this))
     .then((e) => {
@@ -181,7 +188,11 @@ export class MwConnectionProvider {
         if(response.body.loginSuccess) {
           return Promise.resolve(response);
         } else {
-          return Promise.reject(new Error("login error:" + response.errorStr ) );
+          if ( response.errorCode == 0 ) {
+            return Promise.reject(new Error(login_error_description[response.body.loginType]) );
+          } else {
+            return Promise.reject(new Error(response.errorStr));
+          }
         }
     });
   }

@@ -80,6 +80,9 @@ export class LoginFormPage {
       let subTitle: string;
       if ( e instanceof CloseEvent ) {
         subTitle = e.reason;
+        if ( subTitle === "" ) {
+          subTitle = "server config error or unreachable";
+        }
       } else if ( e instanceof Event ) {
         subTitle = e.type;
       } else if ( e instanceof Error ) {
