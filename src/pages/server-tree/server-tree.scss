@@ -18,6 +18,14 @@ page-server-tree {
         color: $text-color;
     }
 
+    tree-internal .tree .node-value.node-selected {
+        color: color($colors, danger);
+    }
+
+    tree-internal .tree .node-value.node-visited {
+        color: color($colors, primary);
+    }
+
     tree-internal .tree .folding.node-collapsed:before {
         color: color($colors, primary);
     }

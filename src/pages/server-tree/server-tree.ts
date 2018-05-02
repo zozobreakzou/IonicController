@@ -1,11 +1,11 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
 import { Refresher } from'ionic-angular';
 
-import { Tree, TreeModel, TreeComponent, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
+import { Tree, TreeModel, TreeComponent, TreeController, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
 
 import { ControllerPage } from "../controller/controller"
 import { MwConnectionProvider } from "../../providers/mw-connection/mw-connection";
@@ -95,6 +95,13 @@ export class ServerTreePage {
   }
 
   onItemSelected(e: NodeSelectedEvent) {
+    let nodeController: TreeController = this.treeComponent.getControllerByNodeId(e.node.node.id);
+
+    let visited_node: HTMLElement = this.treeElement.nativeElement.querySelector("tree-internal .tree .node-value.node-visited");
+    if ( visited_node ) {
+      visited_node.classList.remove('node-visited');
+    }
+
     let actionSheet = this.actionSheetCtrl.create({
       cssClass: "action-sheet-group-overflow-auto",
       buttons: [
@@ -109,7 +116,13 @@ export class ServerTreePage {
                                      + "?maxwallip="+server_info.ip + "&maxwallport="+server_info.no_ssl_port + "&user="+server_info.username + "&pwd="+server_info.password
                                      + "&time="+Date.now();
 
-              this.navCtrl.push(ControllerPage, {controller_url: target_url});
+              this.navCtrl.push(ControllerPage, {controller_url: target_url}).then((v) => {
+                let selected_node: HTMLElement = this.treeElement.nativeElement.querySelector("tree-internal .tree .node-value.node-selected");
+                if ( selected_node ) {
+                  selected_node.classList.add("node-visited");
+                }
+                nodeController.unselect();
+              } );
             });
             return false;
           }
@@ -119,6 +132,7 @@ export class ServerTreePage {
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
+            nodeController.unselect();
             return true;
           }
         }
@@ -162,7 +176,7 @@ export class ServerTreePage {
         children = this.fillTreeModelChild(response.body.cascade_server_tree.child_array);
       }
 
-      let rootController = this.treeServer.getControllerByNodeId(1);
+      let rootController = this.treeComponent.getControllerByNodeId(1);
       rootController.setChildren([]);
       for( let child of children ) {
         rootController.addChild(child);
@@ -205,5 +219,6 @@ export class ServerTreePage {
   private serverTreeModel: TreeModel;
   private treeId: number;
 
-  @ViewChild('treeServer') treeServer : TreeComponent;
+  @ViewChild('treeServer', { read: TreeComponent }) treeComponent : TreeComponent;
+  @ViewChild('treeServer', { read: ElementRef }) treeElement: ElementRef;
 }
