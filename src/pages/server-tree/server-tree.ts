@@ -68,7 +68,7 @@ export class ServerTreePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServerTreePage');
-    let loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
+    let loading = this.loadingCtrl.create({content: "swipe right with two finger to cancel", cssClass: "loading-spinner"});
     loading.present().then( () => {
       this.pageAPI.setupCancelLoading(loading);
     });

@@ -36,7 +36,7 @@ export class ControllerPage {
 
     this.controllerURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.loadURL);
 
-    this.loading = this.loadingCtrl.create({cssClass: "loading-spinner"});
+    this.loading = this.loadingCtrl.create({content: "swipe right with two finger to cancel", cssClass: "loading-spinner"});
     this.loading.present().then( () => {
       this.pageAPI.setupCancelLoading(this.loading);
     });

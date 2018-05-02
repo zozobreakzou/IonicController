@@ -18,6 +18,9 @@
 .loading-ios .loading-wrapper {
     background: transparent;
     justify-content: center;
+    flex-direction: column;
+    color: rgba(200,200,200,0.6);
+    max-width: 360px;
 }
 
 .loading-spinner > ion-spinner {
