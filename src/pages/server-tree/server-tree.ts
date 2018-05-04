@@ -170,6 +170,11 @@ export class ServerTreePage {
   private fetchChildTree() : Promise<any> {
     return this.mwConnection.getServerTree()
     .then( (response) => {
+      let visited_node: HTMLElement = this.treeElement.nativeElement.querySelector("tree-internal .tree .node-value.node-visited");
+      if ( visited_node ) {
+        visited_node.classList.remove('node-visited');
+      }
+
       this.treeId = 2;
       let children = [];
       if ( response.errorCode == 0 && response.body && response.body.error_code == "CascadeServerError_OK" && response.body.cascade_server_tree ) {
