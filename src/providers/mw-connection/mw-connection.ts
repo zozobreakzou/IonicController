@@ -23,8 +23,8 @@ class MwConnection {
 
   open(address: string, onClose?) : Promise<any> {
     console.log("ws open: "+address);
-    assert(!this.ws || this.ws.readyState==WebSocket.CLOSED, "ws should be null or closed");
     if ( this.ws && this.ws.readyState!=WebSocket.CLOSED ) {
+      console.warn("ws should be null or closed");
       return Promise.reject(new Event("logined or logining"));
     }
 
