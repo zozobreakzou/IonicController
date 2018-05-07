@@ -13,9 +13,18 @@ page-server-tree {
         font-size: 2rem;
     }
 
+    tree-internal .tree .node-value .tree-icon {
+        content: url('../assets/imgs/server_icon.png');
+        vertical-align: middle;
+        width: 2.2rem;
+    }
+
     tree-internal .tree .node-value {
-        display: inline-block;
         color: $text-color;
+    }
+
+    tree-internal .tree .node-value .node-name {
+        vertical-align: middle;
     }
 
     tree-internal .tree .node-value.node-selected {

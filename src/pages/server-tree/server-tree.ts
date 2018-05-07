@@ -4,6 +4,7 @@ import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
 import { Refresher } from'ionic-angular';
+import { ElementRef } from '@angular/core';
 
 import { Tree, TreeModel, TreeComponent, TreeController, NodeEvent, Ng2TreeSettings, NodeMenuItemAction, MenuItemSelectedEvent, NodeMenuItem, NodeSelectedEvent, NodeCreatedEvent } from 'ng2-tree';
 
@@ -57,6 +58,10 @@ export class ServerTreePage {
         cssClasses: {
           empty: 'node-leaf disabled'
         },
+        templates: {
+          node: '<span class="tree-icon"></span>',
+          leaf: '<span class="tree-icon"></span>'
+        }
       },
       id: 1,
       value: loginServerInfo.info.name,
@@ -148,7 +153,7 @@ export class ServerTreePage {
     }, 2);
 
     this.mwConnection
-    .login("ws://"+this.loginServer.address+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
+    .login("ws://"+"10.3.70.6"+":"+this.loginServer.port, this.loginServer.username, this.loginServer.password)
     .then((response) => {
       console.log("login success.");
       return this.fetchChildTree();
